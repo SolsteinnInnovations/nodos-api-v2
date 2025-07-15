@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "outDir": "./dist", // Directorio de salida para los archivos compilados
+    "rootDir": "./src", // Directorio raíz donde se encuentran los archivos de entrada
+    "lib": ["ESNext", "DOM"], // Incluir librerías de ESNext y DOM
+    "target": "ESNext", // Compilar con la sintaxis más reciente de ESNext
+    "moduleResolution": "nodenext", // Resolución de módulos similar a Node.js
+    "module": "NodeNext", // Módulo de salida como NodeNext (compatible con ES Modules)
+    "strict": false, // Habilita el modo estricto para una mayor seguridad de tipos
+    "sourceMap": true, // Genera archivos .map para depuración
+    "esModuleInterop": true, // Habilita la interoperabilidad con módulos CommonJS
+    "declaration": true, // Genera archivos de declaración (.d.ts)
+    "skipLibCheck": true, // Ignorar errores de tipos en librerías,
+    "resolveJsonModule": true
+  },
+  "include": [
+    "src/**/*.ts", // Incluir todos los archivos TypeScript en el directorio src
+    "src/types/*.d.ts" // Incluir definiciones de tipos personalizadas
+  ],
+  "exclude": [
+    "src/tests" // Excluir la carpeta de pruebas para la compilación
+  ]
+}

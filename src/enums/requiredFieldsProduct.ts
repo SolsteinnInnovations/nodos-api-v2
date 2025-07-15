@@ -1,0 +1,1 @@
+export const requiredFieldsProduct= ["codigo", "nombre", "precioVenta", "precioLista", "poseeIva"]

@@ -1,0 +1,770 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Solsteinn API",
+        "version": "1.0.0",
+        "description": "Documentación completa de la API de Solsteinn"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:3001/api/v1"
+        }
+    ],
+    "components": {
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            }
+        },
+        "schemas": {
+            "User": {
+                "type": "object",
+                "properties": {
+                    "username": { "type": "string" },
+                    "email": { "type": "string" },
+                    "password": { "type": "string" },
+                    "role": { "type": "array", "items": { "type": "string" } },
+                    "estado": { "type": "boolean" }
+                }
+            },
+            "Client": {
+                "type": "object",
+                "properties": {
+                    "nombre": { "type": "string" },
+                    "apellido": { "type": "string" },
+                    "cuitCuil": { "type": "string" },
+                    "domicilio": { "type": "string" },
+                    "telefono": { "type": "string" },
+                    "email": { "type": "string" },
+                    "iva": { "type": "string" },
+                    "localidad": { "type": "string" },
+                    "provincia": { "type": "string" }
+                }
+            },
+            "Sucursal": {
+                "type": "object",
+                "properties": {
+                    "nombre": { "type": "string" },
+                    "direccion": { "type": "string" },
+                    "telefono": { "type": "string" },
+                    "organizacion": { "type": "string" }
+                }
+            },
+            "Kit": {
+                "type": "object",
+                "properties": {
+                    "nombre": { "type": "string" },
+                    "descripcion": { "type": "string" },
+                    "productos": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "producto": { "type": "string" },
+                                "cantidad": { "type": "number" }
+                            }
+                        }
+                    },
+                    "precio": { "type": "number" }
+                }
+            },
+            "ProductSucursal": {
+                "type": "object",
+                "properties": {
+                    "idSucursal": { "type": "string" },
+                    "cantidad": { "type": "integer" }
+                }
+            },
+            "Product": {
+                "type": "object",
+                "properties": {
+                    "codigo": { "type": "string" },
+                    "nombre": { "type": "string" },
+                    "descripcion": { "type": "string" },
+                    "stock": { "type": "integer" },
+                    "precioLista": { "type": "number" },
+                    "precioVenta": { "type": "number" },
+                    "poseeIva": { "type": "boolean" },
+                    "iva": { "type": "number" },
+                    "categoria": { "type": "string" },
+                    "marca": { "type": "string" },
+                    "organizacion": { "type": "string" },
+                    "sucursales": {
+                        "type": "array",
+                        "items": { "$ref": "#/components/schemas/ProductSucursal" }
+                    }
+                }
+            },
+            "dailyCash": {
+                "type": "object",
+                "properties": {
+                    "fecha": { "type": "string", "format": "date-time" },
+                    "montoInicial": { "type": "number" },
+                    "montoFinal": { "type": "number" },
+                    "estado": { "type": "boolean" },
+                    "idSucursal": { "type": "string" }
+                }
+            },
+            "ClientInvoiceItem": {
+                "type": "object",
+                "properties": {
+                    "codigo": { "type": "string" },
+                    "cantidad": { "type": "number" },
+                    "kit": { "type": "string" }
+                }
+            },
+            "ClientInvoice": {
+                "type": "object",
+                "properties": {
+                    "puntoVenta": { "type": "string" },
+                    "numeroFactura": { "type": "string" },
+                    "detalles": { "type": "string" },
+                    "descuento": { "type": "number" },
+                    "organizacion": { "type": "string" },
+                    "recargo": { "type": "number" },
+                    "subtotal": { "type": "number" },
+                    "total": { "type": "number" },
+                    "tipoFactura": { "type": "string" },
+                    "metodosDePago": { "type": "array", "items": { "type": "string" } },
+                    "condicionIva": { "type": "string" },
+                    "items": {
+                        "type": "array",
+                        "items": { "$ref": "#/components/schemas/ClientInvoiceItem" }
+                    },
+                    "idProductos": { "type": "array", "items": { "type": "string" } },
+                    "fecha": { "type": "string", "format": "date-time" },
+                    "fechaPago": { "type": "string", "format": "date-time" },
+                    "cantidadTotal": { "type": "number" },
+                    "estado": { "type": "boolean" },
+                    "caja": { "type": "string" },
+                    "cuitCuil": { "type": "string" },
+                    "domicilio": { "type": "string" },
+                    "localidad": { "type": "string" },
+                    "provincia": { "type": "string" },
+                    "telefono": { "type": "string" },
+                    "idSucursal": { "type": "string" },
+                    "usuario": { "type": "string" },
+                    "cliente": { "type": "string" }
+                }
+            }
+        }
+    },
+    "security": [
+        {
+            "bearerAuth": []
+        }
+    ],
+    "paths": {
+        "/auth/login": {
+            "post": {
+                "summary": "Login de usuario",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "email": { "type": "string" },
+                                    "password": { "type": "string" }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Login exitoso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "token": { "type": "string" }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": { "description": "Error de validación" }
+                }
+            }
+        },
+        "/users": {
+            "get": {
+                "summary": "Obtener todos los usuarios",
+                "security": [{ "bearerAuth": [] }],
+                "responses": {
+                    "200": {
+                        "description": "Lista de usuarios",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": { "$ref": "#/components/schemas/User" }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "summary": "Crear usuario",
+                "security": [{ "bearerAuth": [] }],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": { "$ref": "#/components/schemas/User" }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": { "description": "Usuario creado" }
+                }
+            }
+        },
+        "/users/{id}": {
+            "get": {
+                "summary": "Obtener usuario por ID",
+                "security": [{ "bearerAuth": [] }],
+                "parameters": [
+                    { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Usuario encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": { "$ref": "#/components/schemas/User" }
+                            }
+                        }
+                    },
+                    "404": { "description": "Usuario no encontrado" }
+                }
+            },
+            "put": {
+                "summary": "Actualizar usuario",
+                "security": [{ "bearerAuth": [] }],
+                "parameters": [
+                    { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": { "$ref": "#/components/schemas/User" }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": { "description": "Usuario actualizado" }
+                }
+            },
+            "delete": {
+                "summary": "Eliminar usuario",
+                "security": [{ "bearerAuth": [] }],
+                "parameters": [
+                    { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+                ],
+                "responses": {
+                    "204": { "description": "Usuario eliminado" }
+                }
+            }
+        },
+        "/clients": {
+            "get": {
+                "summary": "Obtener todos los clientes",
+                "security": [{ "bearerAuth": [] }],
+                "responses": {
+                    "200": {
+                        "description": "Lista de clientes",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": { "$ref": "#/components/schemas/Client" }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "summary": "Crear cliente",
+                "security": [{ "bearerAuth": [] }],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": { "$ref": "#/components/schemas/Client" }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": { "description": "Cliente creado" }
+                }
+            }
+        },
+        "/clients/{id}": {
+            "get": {
+                "summary": "Obtener cliente por ID",
+                "security": [{ "bearerAuth": [] }],
+                "parameters": [
+                    { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Cliente encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": { "$ref": "#/components/schemas/Client" }
+                            }
+                        }
+                    },
+                    "404": { "description": "Cliente no encontrado" }
+                }
+            },
+            "put": {
+                "summary": "Actualizar cliente",
+                "security": [{ "bearerAuth": [] }],
+                "parameters": [
+                    { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": { "$ref": "#/components/schemas/Client" }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": { "description": "Cliente actualizado" }
+                }
+            },
+            "delete": {
+                "summary": "Eliminar cliente",
+                "security": [{ "bearerAuth": [] }],
+                "parameters": [
+                    { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+                ],
+                "responses": {
+                    "204": { "description": "Cliente eliminado" }
+                }
+            }
+        },
+        "/products": {
+            "get": {
+                "summary": "Obtener todos los productos",
+                "security": [{ "bearerAuth": [] }],
+                "responses": {
+                    "200": {
+                        "description": "Lista de productos",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": { "$ref": "#/components/schemas/Product" }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "summary": "Crear producto",
+                "security": [{ "bearerAuth": [] }],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": { "$ref": "#/components/schemas/Product" }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": { "description": "Producto creado" }
+                }
+            }
+        },
+        "/products/{id}": {
+            "get": {
+                "summary": "Obtener producto por ID",
+                "security": [{ "bearerAuth": [] }],
+                "parameters": [
+                    { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Producto encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": { "$ref": "#/components/schemas/Product" }
+                            }
+                        }
+                    },
+                    "404": { "description": "Producto no encontrado" }
+                }
+            },
+            "put": {
+                "summary": "Actualizar producto",
+                "security": [{ "bearerAuth": [] }],
+                "parameters": [
+                    { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": { "$ref": "#/components/schemas/Product" }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": { "description": "Producto actualizado" }
+                }
+            },
+            "delete": {
+                "summary": "Eliminar producto",
+                "security": [{ "bearerAuth": [] }],
+                "parameters": [
+                    { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+                ],
+                "responses": {
+                    "204": { "description": "Producto eliminado" }
+                }
+            }
+        },
+        "/kits": {
+            "get": {
+                "summary": "Obtener todos los kits",
+                "security": [{ "bearerAuth": [] }],
+                "responses": {
+                    "200": {
+                        "description": "Lista de kits",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": { "$ref": "#/components/schemas/Kit" }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "summary": "Crear kit",
+                "security": [{ "bearerAuth": [] }],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": { "$ref": "#/components/schemas/Kit" }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": { "description": "Kit creado" }
+                }
+            }
+        },
+        "/kits/{id}": {
+            "get": {
+                "summary": "Obtener kit por ID",
+                "security": [{ "bearerAuth": [] }],
+                "parameters": [
+                    { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Kit encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": { "$ref": "#/components/schemas/Kit" }
+                            }
+                        }
+                    },
+                    "404": { "description": "Kit no encontrado" }
+                }
+            },
+            "put": {
+                "summary": "Actualizar kit",
+                "security": [{ "bearerAuth": [] }],
+                "parameters": [
+                    { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": { "$ref": "#/components/schemas/Kit" }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": { "description": "Kit actualizado" }
+                }
+            },
+            "delete": {
+                "summary": "Eliminar kit",
+                "security": [{ "bearerAuth": [] }],
+                "parameters": [
+                    { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+                ],
+                "responses": {
+                    "204": { "description": "Kit eliminado" }
+                }
+            }
+        },
+        "/sucursal": {
+            "get": {
+                "summary": "Obtener todas las sucursales",
+                "security": [{ "bearerAuth": [] }],
+                "responses": {
+                    "200": {
+                        "description": "Lista de sucursales",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": { "$ref": "#/components/schemas/Sucursal" }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "summary": "Crear sucursal",
+                "security": [{ "bearerAuth": [] }],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": { "$ref": "#/components/schemas/Sucursal" }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": { "description": "Sucursal creada" }
+                }
+            }
+        },
+        "/sucursales/{id}": {
+            "get": {
+                "summary": "Obtener sucursal por ID",
+                "security": [{ "bearerAuth": [] }],
+                "parameters": [
+                    { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Sucursal encontrada",
+                        "content": {
+                            "application/json": {
+                                "schema": { "$ref": "#/components/schemas/Sucursal" }
+                            }
+                        }
+                    },
+                    "404": { "description": "Sucursal no encontrada" }
+                }
+            },
+            "put": {
+                "summary": "Actualizar sucursal",
+                "security": [{ "bearerAuth": [] }],
+                "parameters": [
+                    { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": { "$ref": "#/components/schemas/Sucursal" }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": { "description": "Sucursal actualizada" }
+                }
+            },
+            "delete": {
+                "summary": "Eliminar sucursal",
+                "security": [{ "bearerAuth": [] }],
+                "parameters": [
+                    { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+                ],
+                "responses": {
+                    "204": { "description": "Sucursal eliminada" }
+                }
+            }
+        },
+        "/daily-cash": {
+            "get": {
+                "summary": "Obtener todos los cierres de caja",
+                "security": [{ "bearerAuth": [] }],
+                "responses": {
+                    "200": {
+                        "description": "Lista de cierres de caja",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": { "$ref": "#/components/schemas/dailyCash" }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "summary": "Crear cierre de caja",
+                "security": [{ "bearerAuth": [] }],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": { "$ref": "#/components/schemas/dailyCash" }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": { "description": "Cierre de caja creado" }
+                }
+            }
+        },
+        "/daily-cash/{id}": {
+            "get": {
+                "summary": "Obtener cierre de caja por ID",
+                "security": [{ "bearerAuth": [] }],
+                "parameters": [
+                    { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Cierre de caja encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": { "$ref": "#/components/schemas/dailyCash" }
+                            }
+                        }
+                    },
+                    "404": { "description": "Cierre de caja no encontrado" }
+                }
+            },
+            "put": {
+                "summary": "Actualizar cierre de caja",
+                "security": [{ "bearerAuth": [] }],
+                "parameters": [
+                    { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": { "$ref": "#/components/schemas/dailyCash" }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": { "description": "Cierre de caja actualizado" }
+                }
+            },
+            "delete": {
+                "summary": "Eliminar cierre de caja",
+                "security": [{ "bearerAuth": [] }],
+                "parameters": [
+                    { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+                ],
+                "responses": {
+                    "204": { "description": "Cierre de caja eliminado" }
+                }
+            }
+        },
+        "/client-invoices": {
+            "get": {
+                "summary": "Obtener todas las facturas de clientes",
+                "security": [{ "bearerAuth": [] }],
+                "responses": {
+                    "200": {
+                        "description": "Lista de facturas",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": { "$ref": "#/components/schemas/ClientInvoice" }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "summary": "Crear factura de cliente",
+                "security": [{ "bearerAuth": [] }],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": { "$ref": "#/components/schemas/ClientInvoice" }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": { "description": "Factura creada" }
+                }
+            }
+        },
+        "/client-invoices/{id}": {
+            "get": {
+                "summary": "Obtener factura de cliente por ID",
+                "security": [{ "bearerAuth": [] }],
+                "parameters": [
+                    { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Factura encontrada",
+                        "content": {
+                            "application/json": {
+                                "schema": { "$ref": "#/components/schemas/ClientInvoice" }
+                            }
+                        }
+                    },
+                    "404": { "description": "Factura no encontrada" }
+                }
+            },
+            "put": {
+                "summary": "Actualizar factura de cliente",
+                "security": [{ "bearerAuth": [] }],
+                "parameters": [
+                    { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": { "$ref": "#/components/schemas/ClientInvoice" }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": { "description": "Factura actualizada" }
+                }
+            },
+            "delete": {
+                "summary": "Eliminar factura de cliente",
+                "security": [{ "bearerAuth": [] }],
+                "parameters": [
+                    { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+                ],
+                "responses": {
+                    "204": { "description": "Factura eliminada" }
+                }
+            }
+        }
+    }
+}
