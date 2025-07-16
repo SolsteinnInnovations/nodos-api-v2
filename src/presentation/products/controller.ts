@@ -13,6 +13,8 @@ export class ProductController {
   // DI
   constructor() {}
 
+
+  //TO DO REVISAR FLUJO Y LOGICA DE CREATEPRODUCT 
   createProduct = async (req: Request, res: Response): Promise<void> => {
   //   try {
   //     const products: IProduct[] = Array.isArray(req.body)

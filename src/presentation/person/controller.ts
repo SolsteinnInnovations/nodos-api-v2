@@ -5,6 +5,8 @@ import { PersonModel } from "../../data/mongo/models/person.model";
 export class PersonController {
     constructor() { }
 
+
+    //TO DO Ver importancia de tener person en el sistema
     createPerson = async (req: Request, res: Response) => {
         try {
             const person = req.body;
