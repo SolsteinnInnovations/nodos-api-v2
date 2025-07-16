@@ -17,14 +17,11 @@ class ProductController {
             const products = Array.isArray(req.body)
                 ? req.body
                 : [req.body];
-            // const sucursalesGlobal = req.body.sucursales || [];
             const newProducts = [];
             const notCreated = [];
             const { organizationId } = req.user;
             for (const product of products) {
-                const { codigo, nombre, categoria, marca, 
-                // sucursales = sucursalesGlobal,
-                ...rest } = product;
+                const { codigo, nombre, categoria, marca, ...rest } = product;
                 const newNombre = nombre.toLowerCase().trim();
                 const nombreCategoria = categoria.toLowerCase().trim();
                 const [codigoExists, categoriaExists, marcaExists] = await Promise.all([
@@ -68,10 +65,6 @@ class ProductController {
                     });
                     continue;
                 }
-                // //  Validar stock global vs. suma de stock por sucursales
-                // const sucursalStockTotal = sucursales.reduce((acc, suc) => {
-                //   return acc + (typeof suc.stock === "number" ? suc.stock : 0);
-                // }, 0);
                 // Crear producto
                 const newProduct = await product_model_1.ProductModel.create({
                     codigo,
@@ -82,19 +75,6 @@ class ProductController {
                     ...rest,
                 });
                 newProducts.push(newProduct);
-                // // Crear un ProductSucursal por cada sucursal
-                // for (const suc of sucursales) {
-                //   if (!suc?.idSucursal || suc.stock === undefined) continue;
-                //   await ProductSucursalModel.create({
-                //     producto: newProduct._id,
-                //     stock: suc.stock,
-                //     habilitado: true,
-                //     precioCosto: newProduct.precioLista,
-                //     precioVentaSucursal: newProduct.precioVenta,
-                //     sucursal: suc.idSucursal,
-                //     organizacion: organizationId,
-                //   });
-                // }
             }
             if (newProducts.length === 0 && notCreated.length > 0) {
                 res.status(400).json({
@@ -122,9 +102,9 @@ class ProductController {
         try {
             const products = await product_model_1.ProductModel.find({
                 organizacion: req.user.organizationId,
-            });
-            // .populate("categoria", "nombre")
-            // .populate("marca", "nombre"); // Esto trae los datos completos de la categoría
+            })
+                .populate("categoria", "nombre")
+                .populate("marca", "nombre");
             res.status(200).json({ products });
         }
         catch (error) {
@@ -221,9 +201,10 @@ class ProductController {
             // 🔥 Eliminar todos los registros de ProductSucursal que correspondan a este producto
             await productSucursal_model_1.ProductSucursalModel.deleteMany({ producto: id });
             (0, createLog_1.createLog)(logSeverity_enum_1.Severidad.INFO, `Producto eliminado correctamente. Producto ${product} \n - Usuario ${req.user.username}`);
-            res
-                .status(200)
-                .json({ product, msg: "Producto y sus stocks en sucursales eliminados correctamente" });
+            res.status(200).json({
+                product,
+                msg: "Producto y sus stocks en sucursales eliminados correctamente",
+            });
         }
         catch (error) {
             (0, createLog_1.createLog)(logSeverity_enum_1.Severidad.ERROR, `Hubo un error al eliminar el producto con id ${req.params.id}\n Usuario ${req.user.username}`);
@@ -274,7 +255,9 @@ class ProductController {
             res.status(200).json({ products });
         }
         catch (error) {
-            res.status(500).json({ message: "Error al obtener los productos", error });
+            res
+                .status(500)
+                .json({ message: "Error al obtener los productos", error });
         }
     };
 }

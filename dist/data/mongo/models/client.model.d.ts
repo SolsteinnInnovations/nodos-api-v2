@@ -3,9 +3,9 @@ export declare const ClientModel: mongoose.Model<{
     createdAt: NativeDate;
     updatedAt: NativeDate;
 } & {
-    nombre: string;
-    estado: boolean;
     emailValidated: boolean;
+    estado: boolean;
+    nombre: string;
     apellido: string;
     organizacion?: string;
     email?: string;
@@ -21,9 +21,9 @@ export declare const ClientModel: mongoose.Model<{
     createdAt: NativeDate;
     updatedAt: NativeDate;
 } & {
-    nombre: string;
-    estado: boolean;
     emailValidated: boolean;
+    estado: boolean;
+    nombre: string;
     apellido: string;
     organizacion?: string;
     email?: string;
@@ -37,9 +37,9 @@ export declare const ClientModel: mongoose.Model<{
     createdAt: NativeDate;
     updatedAt: NativeDate;
 } & {
-    nombre: string;
-    estado: boolean;
     emailValidated: boolean;
+    estado: boolean;
+    nombre: string;
     apellido: string;
     organizacion?: string;
     email?: string;
@@ -53,9 +53,9 @@ export declare const ClientModel: mongoose.Model<{
     createdAt: NativeDate;
     updatedAt: NativeDate;
 } & {
-    nombre: string;
-    estado: boolean;
     emailValidated: boolean;
+    estado: boolean;
+    nombre: string;
     apellido: string;
     organizacion?: string;
     email?: string;
