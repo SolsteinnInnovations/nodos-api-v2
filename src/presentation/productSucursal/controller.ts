@@ -3,22 +3,24 @@ import { createLog } from "../../helpers/createLog";
 import { Severidad } from "../../enums/logSeverity.enum";
 import { IProductSucursal } from "../../interfaces/IProductSucursal.interface";
 import { ProductSucursalModel } from "../../data/mongo/models/productSucursal.model";
-import { ProductModel } from "../../data/mongo/models/product.model";
-
-
-
+// import { ProductModel } from "../../data/mongo/models/product.model";
 
 export class ProductSucursalController {
   // DI
-  constructor() { }
+  constructor() {}
 
   createProductSucursal = async (req: Request, res: Response) => {
     try {
-
       const productsSucursal: IProductSucursal[] = req.body;
       const newProductsSucursalPromise = [];
       for (const productSucursal of productsSucursal) {
-        const { productoId, sucursalId, stock, precioCosto, precioVentaSucursal } = productSucursal;
+        const {
+          productoId,
+          sucursalId,
+          stock,
+          precioCosto,
+          precioVentaSucursal,
+        } = productSucursal;
         const newProductSucursal: IProductSucursal = {
           stock,
           precioCosto,
@@ -27,15 +29,16 @@ export class ProductSucursalController {
           sucursalId,
           organizacion: req.user.organizationId, // Asignar la organización del usuario logueado
         };
-        newProductsSucursalPromise.push(newProductSucursal)
+        newProductsSucursalPromise.push(newProductSucursal);
       }
 
       await ProductSucursalModel.insertMany(newProductsSucursalPromise);
-      createLog(Severidad.INFO, `Productos ${newProductsSucursalPromise} creados  correctamente  por: ${req.user.username}`)
+      createLog(
+        Severidad.INFO,
+        `Productos ${newProductsSucursalPromise} creados  correctamente  por: ${req.user.username}`
+      );
       res.status(200).json({
         msg: "Productos creados correctamente",
-
-
       });
     } catch (error) {
       res.status(500).json({ message: "Error al crear los productos", error });
@@ -44,16 +47,17 @@ export class ProductSucursalController {
 
   getProductsSucursal = async (req: Request, res: Response) => {
     try {
-
-
-
-      const products = await ProductSucursalModel.find({ organizacion: req.user.organizationId, })
-        .populate('producto')
-      // .populate('producto.marca') // Esto trae los datos completos de la categoría
+      const products = await ProductSucursalModel.find({
+        organizacion: req.user.organizationId,
+      })
+        .populate("producto")
+        .populate("producto.marca"); // Esto trae los datos completos de la categoría
 
       res.status(200).json({ products });
     } catch (error) {
-      res.status(500).json({ message: "Error al obtener los productos", error });
+      res
+        .status(500)
+        .json({ message: "Error al obtener los productos", error });
     }
   };
 
@@ -73,11 +77,12 @@ export class ProductSucursalController {
         return;
       }
 
-      const updatedProductSucursal = await ProductSucursalModel.findOneAndUpdate(
-        { _id: id, organizacion: organizationId },
-        updateData,
-        { new: true }
-      );
+      const updatedProductSucursal =
+        await ProductSucursalModel.findOneAndUpdate(
+          { _id: id, organizacion: organizationId },
+          updateData,
+          { new: true }
+        );
 
       createLog(
         Severidad.INFO,
@@ -94,7 +99,9 @@ export class ProductSucursalController {
         Severidad.ERROR,
         `Error al actualizar ProductoSucursal con id ${req.params.id} - Usuario ${req.user.username}`
       );
-      res.status(500).json({ message: "Error al actualizar el productoSucursal", error });
+      res
+        .status(500)
+        .json({ message: "Error al actualizar el productoSucursal", error });
     }
   };
 
@@ -110,7 +117,7 @@ export class ProductSucursalController {
 
       if (!productSucursal) {
         res.status(404).json({ message: "ProductoSucursal no encontrado" });
-        return
+        return;
       }
 
       await ProductSucursalModel.findOneAndDelete({
@@ -127,16 +134,15 @@ export class ProductSucursalController {
         msg: "ProductoSucursal eliminado correctamente",
         productSucursal,
       });
-      return
+      return;
     } catch (error) {
       createLog(
         Severidad.ERROR,
         `Error al eliminar ProductoSucursal con id ${req.params.id} - Usuario ${req.user.username}`
       );
-      res.status(500).json({ message: "Error al eliminar el productoSucursal", error });
+      res
+        .status(500)
+        .json({ message: "Error al eliminar el productoSucursal", error });
     }
   };
-
-
-};
-
+}

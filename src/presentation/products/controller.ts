@@ -4,7 +4,7 @@ import xlsx, { WorkSheet } from "xlsx";
 import { ProductModel } from "../../data/mongo/models/product.model";
 import { IProduct, IProductInvalid } from "../../interfaces/IProduct.interface";
 // import { validateAndFormatProducts } from "../../helpers/bulkValidation";
-import {CategoryModel} from "../../data/mongo/models/category.model";
+import { CategoryModel } from "../../data/mongo/models/category.model";
 import { BrandModel } from "../../data/mongo/models/brand.model";
 import { createLog } from "../../helpers/createLog";
 import { Severidad } from "../../enums/logSeverity.enum";
@@ -19,21 +19,14 @@ export class ProductController {
       const products: IProduct[] = Array.isArray(req.body)
         ? req.body
         : [req.body];
-      // const sucursalesGlobal = req.body.sucursales || [];
+
       const newProducts: IProduct[] = [];
       const notCreated: IProductInvalid[] = [];
 
       const { organizationId } = req.user;
 
       for (const product of products) {
-        const {
-          codigo,
-          nombre,
-          categoria,
-          marca,          
-          // sucursales = sucursalesGlobal,
-          ...rest
-        } = product;
+        const { codigo, nombre, categoria, marca, ...rest } = product;
 
         const newNombre = nombre.toLowerCase().trim();
         const nombreCategoria = categoria.toLowerCase().trim();
@@ -83,40 +76,17 @@ export class ProductController {
           continue;
         }
 
-        // //  Validar stock global vs. suma de stock por sucursales
-        // const sucursalStockTotal = sucursales.reduce((acc, suc) => {
-        //   return acc + (typeof suc.stock === "number" ? suc.stock : 0);
-        // }, 0);
-
-       
-
         // Crear producto
         const newProduct = await ProductModel.create({
           codigo,
           nombre: newNombre,
           categoria: categoriaExists,
           marca: marcaExists,
-        
           organizacion: organizationId,
           ...rest,
         });
 
         newProducts.push(newProduct);
-
-        // // Crear un ProductSucursal por cada sucursal
-        // for (const suc of sucursales) {
-        //   if (!suc?.idSucursal || suc.stock === undefined) continue;
-
-        //   await ProductSucursalModel.create({
-        //     producto: newProduct._id,
-        //     stock: suc.stock,
-        //     habilitado: true,
-        //     precioCosto: newProduct.precioLista,
-        //     precioVentaSucursal: newProduct.precioVenta,
-        //     sucursal: suc.idSucursal,
-        //     organizacion: organizationId,
-        //   });
-        // }
       }
 
       if (newProducts.length === 0 && notCreated.length > 0) {
@@ -146,17 +116,13 @@ export class ProductController {
     }
   };
 
- 
-  
-
-
-   getProducts = async (req: Request, res: Response) => {
+  getProducts = async (req: Request, res: Response) => {
     try {
       const products = await ProductModel.find({
         organizacion: req.user.organizationId,
       })
-        // .populate("categoria", "nombre")
-        // .populate("marca", "nombre"); // Esto trae los datos completos de la categoría
+        .populate("categoria", "nombre")
+        .populate("marca", "nombre");
 
       res.status(200).json({ products });
     } catch (error) {
@@ -164,7 +130,7 @@ export class ProductController {
         .status(500)
         .json({ message: "Error al obtener los productos", error });
     }
-  }
+  };
 
   getProduct = async (req: Request, res: Response) => {
     try {
@@ -237,54 +203,54 @@ export class ProductController {
     }
   };
 
- deleteProduct = async (req: Request, res: Response) => {
-  try {
-    const { id } = req.params;
-    const { organizationId } = req.user;
+  deleteProduct = async (req: Request, res: Response) => {
+    try {
+      const { id } = req.params;
+      const { organizationId } = req.user;
 
-    const product: IProduct = await ProductModel.findOne({
-      _id: id,
-      organizacion: organizationId,
-    });
+      const product: IProduct = await ProductModel.findOne({
+        _id: id,
+        organizacion: organizationId,
+      });
 
-    if (!product) {
-      res.status(404).json({ message: "Product not found" });
-      return;
+      if (!product) {
+        res.status(404).json({ message: "Product not found" });
+        return;
+      }
+
+      if (product.organizacion.toString() !== organizationId) {
+        res
+          .status(403)
+          .json({ message: "No tienes permiso para eliminar este producto" });
+        return;
+      }
+
+      // Eliminar producto
+      await ProductModel.findOneAndDelete({
+        _id: id,
+        organizacion: organizationId,
+      });
+
+      // 🔥 Eliminar todos los registros de ProductSucursal que correspondan a este producto
+      await ProductSucursalModel.deleteMany({ producto: id });
+
+      createLog(
+        Severidad.INFO,
+        `Producto eliminado correctamente. Producto ${product} \n - Usuario ${req.user.username}`
+      );
+
+      res.status(200).json({
+        product,
+        msg: "Producto y sus stocks en sucursales eliminados correctamente",
+      });
+    } catch (error) {
+      createLog(
+        Severidad.ERROR,
+        `Hubo un error al eliminar el producto con id ${req.params.id}\n Usuario ${req.user.username}`
+      );
+      res.status(500).json({ message: "Error al eliminar el producto", error });
     }
-
-    if (product.organizacion.toString() !== organizationId) {
-      res
-        .status(403)
-        .json({ message: "No tienes permiso para eliminar este producto" });
-      return;
-    }
-
-    // Eliminar producto
-    await ProductModel.findOneAndDelete({
-      _id: id,
-      organizacion: organizationId,
-    });
-
-    // 🔥 Eliminar todos los registros de ProductSucursal que correspondan a este producto
-    await ProductSucursalModel.deleteMany({ producto: id });
-
-    createLog(
-      Severidad.INFO,
-      `Producto eliminado correctamente. Producto ${product} \n - Usuario ${req.user.username}`
-    );
-
-    res
-      .status(200)
-      .json({ product, msg: "Producto y sus stocks en sucursales eliminados correctamente" });
-  } catch (error) {
-    createLog(
-      Severidad.ERROR,
-      `Hubo un error al eliminar el producto con id ${req.params.id}\n Usuario ${req.user.username}`
-    );
-    res.status(500).json({ message: "Error al eliminar el producto", error });
-  }
-};
-
+  };
 
   // bulkUploadProducts = async (req: Request, res: Response): Promise<void> => {
   //   const file = req.files.File[0] || req.files.File;
@@ -327,7 +293,6 @@ export class ProductController {
   //   }
   // };
 
-
   lowStockProducts = async (req: Request, res: Response) => {
     try {
       const { organizationId } = req.user;
@@ -337,10 +302,9 @@ export class ProductController {
       });
       res.status(200).json({ products });
     } catch (error) {
-      res.status(500).json({ message: "Error al obtener los productos", error });
+      res
+        .status(500)
+        .json({ message: "Error al obtener los productos", error });
     }
   };
-
-
-
 }

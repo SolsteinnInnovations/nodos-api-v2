@@ -26,9 +26,7 @@ export class Productroutes {
         body("*.iva")
           .optional()
           .isFloat({gt:0}).withMessage("El campo iva debe ser mayor a 0"),
-        //   .isFloat({ lt: 100 }).withMessage("El campo iva debe ser menor a 100"),
-        // body("*.stock", "El campo stock es obligatorio").not().isEmpty(),
-        // body("*.stock", "El campo debe ser mayor a 0").isInt({gt:0}),
+      
         validarCampos,
       ],
 
