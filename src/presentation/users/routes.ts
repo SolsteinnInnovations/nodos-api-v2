@@ -13,20 +13,20 @@ export class UserRoutes {
   
     router.get("/clerk-users", controller.getClerkUsers);
     router.get("/clerk-users/:id", controller.getClerkUser);
-    router.post("/clerk-users",[
-      body("name", "El nombre de la persona es obligatorio").not().isEmpty(),
-      body("password", "No ingresaste ninguna password").not().isEmpty(),
-      body("password", "La password debe ser alfanumerica").isAlphanumeric(),
-      body("password", "La password debe tener como minmo 8 caracternes").isLength({min:8}),
-      body("email", "El email es obligatorio").not().isEmpty(),
-      body("email", "El email ingresado es incorrecto").isEmail(),
-      body("roles", "No ingresaste ningun rol").not().isEmpty().isArray(),
-      body("permisos", "No ingresaste ningun permiso").not().isEmpty().isArray(),
-      validarCampos
-    ],controller.postUser)
+    // router.post("/clerk-users",[
+    //   body("name", "El nombre de la persona es obligatorio").not().isEmpty(),
+    //   body("password", "No ingresaste ninguna password").not().isEmpty(),
+    //   body("password", "La password debe ser alfanumerica").isAlphanumeric(),
+    //   body("password", "La password debe tener como minmo 8 caracternes").isLength({min:8}),
+    //   body("email", "El email es obligatorio").not().isEmpty(),
+    //   body("email", "El email ingresado es incorrecto").isEmail(),
+    //   body("roles", "No ingresaste ningun rol").not().isEmpty().isArray(),
+    //   body("permisos", "No ingresaste ningun permiso").not().isEmpty().isArray(),
+    //   validarCampos
+    // ],controller.postUser)
     // router.patch('/:id',  controller.updateUser);
-    router.get("/:id", [], controller.getUser);
-    router.get("/", [  ], controller.getUsers);
+    // router.get("/:id", [], controller.getUser);
+    // router.get("/", [  ], controller.getUsers);
     router.delete("/:username", controller.deleteUser);
     // router.get("/", [  ], controller.getClerkUsers);
     router.put("/:username", [  ], controller.updateUser);

@@ -79,45 +79,45 @@ export class UserController {
     }
   };
 
-  postUser = async (req: Request, res: Response) => {
-    try {
+  // postUser = async (req: Request, res: Response) => {
+  //   try {
 
-      const { organizationId } = req.user;
+  //     const { organizationId } = req.user;
 
-      // if(usuario[0] !== 'Admin' || !organizationId)   { 
-      //   res.status(400).json({ message: "User must be Admin or have and organizationId" });
-      //   return
-      // }
+  //     // if(usuario[0] !== 'Admin' || !organizationId)   { 
+  //     //   res.status(400).json({ message: "User must be Admin or have and organizationId" });
+  //     //   return
+  //     // }
 
-      const formData = req.body as IUser
-      const clerkUser = {
-        ...formData,
-        organizationId
-      }
+  //     const formData = req.body as IUser
+  //     const clerkUser = {
+  //       ...formData,
+  //       organizationId
+  //     }
 
-      // await ClerkProvider.createUserClerk(clerkUser);
+  //     // await ClerkProvider.createUserClerk(clerkUser);
 
-      res.status(200).json({ clerkUser });
-      return;
-    } catch (error) {
-      console.log(error)
-      res.status(500).json({ error: error.message });
-    }
-  }
+  //     res.status(200).json({ clerkUser });
+  //     return;
+  //   } catch (error) {
+  //     console.log(error)
+  //     res.status(500).json({ error: error.message });
+  //   }
+  // }
 
-  getUser = async (req: Request, res: Response) => {
-    try {
-      const { id } = req.params;
-      const user = await UserModel.findById(id);
-      if (!user) {
-        res.status(404).json({ message: "User not found" });
-        return;
-      }
-      res.status(200).json({ user });
-    } catch (error) {
-      res.status(500).json({ message: "Error al obtener el usuario", error });
-    }
-  };
+  // getUser = async (req: Request, res: Response) => {
+  //   try {
+  //     const { id } = req.params;
+  //     const user = await UserModel.findById(id);
+  //     if (!user) {
+  //       res.status(404).json({ message: "User not found" });
+  //       return;
+  //     }
+  //     res.status(200).json({ user });
+  //   } catch (error) {
+  //     res.status(500).json({ message: "Error al obtener el usuario", error });
+  //   }
+  // };
 
   updateUser = async (req: Request, res: Response) => {
     try {
@@ -181,14 +181,14 @@ export class UserController {
     }
   };
 
-  getUsers = async (req: Request, res: Response) => {
-    try {
-      const users = await UserModel.find();
-      res.status(200).json(users);
-    } catch (error) {
-      res.status(500).json({ message: 'Error fetching users', error: error });
-    }
-  }
+  // getUsers = async (req: Request, res: Response) => {
+  //   try {
+  //     const users = await UserModel.find();
+  //     res.status(200).json(users);
+  //   } catch (error) {
+  //     res.status(500).json({ message: 'Error fetching users', error: error });
+  //   }
+  // }
 
   getClerkUsers = async (req: Request, res: Response) => {
     try {
