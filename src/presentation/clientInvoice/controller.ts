@@ -135,7 +135,7 @@ createClientInvoice = async (req: Request, res: Response): Promise<void> => {
         continue;
       }
 
-      product.stock = Math.max(0, (product.stock || 0) - cantidad);
+      // product.stock = Math.max(0, (product.stock || 0) - cantidad);
       await product.save();
     }
 

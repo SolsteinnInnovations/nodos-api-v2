@@ -4,7 +4,7 @@ export interface IProduct {
     codigo: string;
     nombre: string;
     descripcion?: string;
-    stock: number; // Cambiado a obligatorio
+    // stock: number; // Cambiado a obligatorio
     precioLista: number;
     precioVenta: number;
     poseeIva: boolean;

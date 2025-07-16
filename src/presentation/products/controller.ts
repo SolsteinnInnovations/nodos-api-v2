@@ -4,7 +4,8 @@ import xlsx, { WorkSheet } from "xlsx";
 import { ProductModel } from "../../data/mongo/models/product.model";
 import { IProduct, IProductInvalid } from "../../interfaces/IProduct.interface";
 // import { validateAndFormatProducts } from "../../helpers/bulkValidation";
-
+import {CategoryModel} from "../../data/mongo/models/category.model";
+import { BrandModel } from "../../data/mongo/models/brand.model";
 import { createLog } from "../../helpers/createLog";
 import { Severidad } from "../../enums/logSeverity.enum";
 import { ProductSucursalModel } from "../../data/mongo/models/productSucursal.model"; // Asegúrate de tener este modelo
@@ -14,162 +15,156 @@ export class ProductController {
   constructor() {}
 
   createProduct = async (req: Request, res: Response): Promise<void> => {
-  //   try {
-  //     const products: IProduct[] = Array.isArray(req.body)
-  //       ? req.body
-  //       : [req.body];
-  //     const sucursalesGlobal = req.body.sucursales || [];
-  //     const newProducts: IProduct[] = [];
-  //     const notCreated: IProductInvalid[] = [];
+    try {
+      const products: IProduct[] = Array.isArray(req.body)
+        ? req.body
+        : [req.body];
+      // const sucursalesGlobal = req.body.sucursales || [];
+      const newProducts: IProduct[] = [];
+      const notCreated: IProductInvalid[] = [];
 
-  //     const { organizationId } = req.user;
+      const { organizationId } = req.user;
 
-  //     for (const product of products) {
-  //       const {
-  //         codigo,
-  //         nombre,
-  //         categoria,
-  //         marca,
-  //         stock,
-  //         sucursales = sucursalesGlobal,
-  //         ...rest
-  //       } = product;
+      for (const product of products) {
+        const {
+          codigo,
+          nombre,
+          categoria,
+          marca,          
+          // sucursales = sucursalesGlobal,
+          ...rest
+        } = product;
 
-  //       const newNombre = nombre.toLowerCase().trim();
-  //       const nombreCategoria = categoria.toLowerCase().trim();
+        const newNombre = nombre.toLowerCase().trim();
+        const nombreCategoria = categoria.toLowerCase().trim();
 
-  //       // const [codigoExists, categoriaExists, marcaExists] = await Promise.all([
-  //       //   ProductModel.findOne({ codigo, organizacion: organizationId }),
-  //       //   CategoryModel.findOne({
-  //       //     nombre: nombreCategoria,
-  //       //     organizacion: organizationId,
-  //       //   }),
-  //       //   BrandModel.findOne({
-  //       //     nombre: marca.toUpperCase().trim(),
-  //       //     organizacion: organizationId,
-  //       //   }),
-  //       // ]);
+        const [codigoExists, categoriaExists, marcaExists] = await Promise.all([
+          ProductModel.findOne({ codigo, organizacion: organizationId }),
+          CategoryModel.findOne({
+            nombre: nombreCategoria,
+            organizacion: organizationId,
+          }),
+          BrandModel.findOne({
+            nombre: marca.toUpperCase().trim(),
+            organizacion: organizationId,
+          }),
+        ]);
 
-  //       if (codigoExists) {
-  //         notCreated.push({
-  //           codigo,
-  //           categoria,
-  //           marca,
-  //           nombre: newNombre,
-  //           msg: "El código ingresado ya se encuentra registrado, no se puede duplicar",
-  //         });
-  //         continue;
-  //       }
+        if (codigoExists) {
+          notCreated.push({
+            codigo,
+            categoria,
+            marca,
+            nombre: newNombre,
+            msg: "El código ingresado ya se encuentra registrado, no se puede duplicar",
+          });
+          continue;
+        }
 
-  //       // if (!categoriaExists) {
-  //       //   notCreated.push({
-  //       //     codigo,
-  //       //     categoria,
-  //       //     marca,
-  //       //     nombre: newNombre,
-  //       //     msg: "La categoria no se encuentra registrada, por favor cargue dicha categoria antes de crear el producto",
-  //       //   });
-  //       //   continue;
-  //       // }
+        if (!categoriaExists) {
+          notCreated.push({
+            codigo,
+            categoria,
+            marca,
+            nombre: newNombre,
+            msg: "La categoria no se encuentra registrada, por favor cargue dicha categoria antes de crear el producto",
+          });
+          continue;
+        }
 
-  //       // if (!marcaExists) {
-  //       //   notCreated.push({
-  //       //     codigo,
-  //       //     categoria,
-  //       //     marca,
-  //       //     nombre: newNombre,
-  //       //     msg: "La marca no se encuentra registrada, por favor cargue dicha marca antes de crear el producto",
-  //       //   });
-  //       //   continue;
-  //       }
+        if (!marcaExists) {
+          notCreated.push({
+            codigo,
+            categoria,
+            marca,
+            nombre: newNombre,
+            msg: "La marca no se encuentra registrada, por favor cargue dicha marca antes de crear el producto",
+          });
+          continue;
+        }
 
-  //       //  Validar stock global vs. suma de stock por sucursales
-  //       const sucursalStockTotal = sucursales.reduce((acc, suc) => {
-  //         return acc + (typeof suc.stock === "number" ? suc.stock : 0);
-  //       }, 0);
+        // //  Validar stock global vs. suma de stock por sucursales
+        // const sucursalStockTotal = sucursales.reduce((acc, suc) => {
+        //   return acc + (typeof suc.stock === "number" ? suc.stock : 0);
+        // }, 0);
 
-  //       if (stock !== sucursalStockTotal) {
-  //         notCreated.push({
-  //           codigo,
-  //           categoria,
-  //           marca,
-  //           nombre: newNombre,
-  //           msg: `El stock global (${stock}) no coincide con la suma del stock por sucursales (${sucursalStockTotal})`,
-  //         });
-  //         continue;
-  //       }
+       
 
-  //       // Crear producto
-  //       const newProduct = await ProductModel.create({
-  //         codigo,
-  //         nombre: newNombre,
-  //         categoria: categoriaExists,
-  //         marca: marcaExists,
-  //         stock: stock || 0,
-  //         organizacion: organizationId,
-  //         ...rest,
-  //       });
+        // Crear producto
+        const newProduct = await ProductModel.create({
+          codigo,
+          nombre: newNombre,
+          categoria: categoriaExists,
+          marca: marcaExists,
+        
+          organizacion: organizationId,
+          ...rest,
+        });
 
-  //       newProducts.push(newProduct);
+        newProducts.push(newProduct);
 
-  //       // Crear un ProductSucursal por cada sucursal
-  //       for (const suc of sucursales) {
-  //         if (!suc?.idSucursal || suc.stock === undefined) continue;
+        // // Crear un ProductSucursal por cada sucursal
+        // for (const suc of sucursales) {
+        //   if (!suc?.idSucursal || suc.stock === undefined) continue;
 
-  //         await ProductSucursalModel.create({
-  //           producto: newProduct._id,
-  //           stock: suc.stock,
-  //           habilitado: true,
-  //           precioCosto: newProduct.precioLista,
-  //           precioVentaSucursal: newProduct.precioVenta,
-  //           sucursal: suc.idSucursal,
-  //           organizacion: organizationId,
-  //         });
-  //       }
-  //     }
+        //   await ProductSucursalModel.create({
+        //     producto: newProduct._id,
+        //     stock: suc.stock,
+        //     habilitado: true,
+        //     precioCosto: newProduct.precioLista,
+        //     precioVentaSucursal: newProduct.precioVenta,
+        //     sucursal: suc.idSucursal,
+        //     organizacion: organizationId,
+        //   });
+        // }
+      }
 
-  //     if (newProducts.length === 0 && notCreated.length > 0) {
-  //       res.status(400).json({
-  //         msg: "Hubo un error al procesar uno o más productos",
-  //         notCreated,
-  //       });
-  //       return;
-  //     }
+      if (newProducts.length === 0 && notCreated.length > 0) {
+        res.status(400).json({
+          msg: "Hubo un error al procesar uno o más productos",
+          notCreated,
+        });
+        return;
+      }
 
-  //     createLog(
-  //       Severidad.INFO,
-  //       `Productos creados correctamente: ${newProducts.length} por: ${req.user.username}`
-  //     );
+      createLog(
+        Severidad.INFO,
+        `Productos creados correctamente: ${newProducts.length} por: ${req.user.username}`
+      );
 
-  //     res.status(200).json({
-  //       msg: "Productos creados correctamente",
-  //       newProducts,
-  //       notCreated,
-  //     });
-  //   } catch (error) {
-  //     console.error("Error al crear productos:", error);
-  //     res.status(500).json({
-  //       message: "Error al crear los productos",
-  //       error: error.message,
-  //     });
-  //   }
-  // };
-
-  // getProducts = async (req: Request, res: Response) => {
-  //   try {
-  //     const products = await ProductModel.find({
-  //       organizacion: req.user.organizationId,
-  //     })
-  //       .populate("categoria", "nombre")
-  //       .populate("marca", "nombre"); // Esto trae los datos completos de la categoría
-
-  //     res.status(200).json({ products });
-  //   } catch (error) {
-  //     res
-  //       .status(500)
-  //       .json({ message: "Error al obtener los productos", error });
-  //   }
+      res.status(200).json({
+        msg: "Productos creados correctamente",
+        newProducts,
+        notCreated,
+      });
+    } catch (error) {
+      console.error("Error al crear productos:", error);
+      res.status(500).json({
+        message: "Error al crear los productos",
+        error: error.message,
+      });
+    }
   };
+
+ 
+  
+
+
+   getProducts = async (req: Request, res: Response) => {
+    try {
+      const products = await ProductModel.find({
+        organizacion: req.user.organizationId,
+      })
+        // .populate("categoria", "nombre")
+        // .populate("marca", "nombre"); // Esto trae los datos completos de la categoría
+
+      res.status(200).json({ products });
+    } catch (error) {
+      res
+        .status(500)
+        .json({ message: "Error al obtener los productos", error });
+    }
+  }
 
   getProduct = async (req: Request, res: Response) => {
     try {

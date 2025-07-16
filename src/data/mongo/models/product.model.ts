@@ -15,10 +15,10 @@ const productSchema = new mongoose.Schema(
       type: String,
       default: 'Producto sin descripción',
     },
-    stock: {
-      type: Number,
-      required: true,
-    },
+    // stock: {
+    //   type: Number,
+    //   required: true,
+    // },
     precioLista: {
       type: Number,
       required: [true, "Precio lista is required"],
