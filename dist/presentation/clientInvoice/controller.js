@@ -113,7 +113,7 @@ class ClientInvoiceController {
                     console.warn(`Producto general no encontrado: ${productoId}`);
                     continue;
                 }
-                product.stock = Math.max(0, (product.stock || 0) - cantidad);
+                // product.stock = Math.max(0, (product.stock || 0) - cantidad);
                 await product.save();
             }
             res.status(200).json({

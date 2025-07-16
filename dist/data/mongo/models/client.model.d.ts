@@ -11,10 +11,10 @@ export declare const ClientModel: mongoose.Model<{
     email?: string;
     telefono?: string;
     domicilio?: string;
-    localidad?: string;
-    cuitCuil?: string;
-    provincia?: string;
     fechaNacimiento?: NativeDate;
+    cuitCuil?: string;
+    localidad?: string;
+    provincia?: string;
 }, {}, {}, {}, mongoose.Schema<any, mongoose.Model<any, any, any, any, any, any>, {}, {}, {}, {}, {
     timestamps: true;
 }, {
@@ -29,10 +29,10 @@ export declare const ClientModel: mongoose.Model<{
     email?: string;
     telefono?: string;
     domicilio?: string;
-    localidad?: string;
-    cuitCuil?: string;
-    provincia?: string;
     fechaNacimiento?: NativeDate;
+    cuitCuil?: string;
+    localidad?: string;
+    provincia?: string;
 }, mongoose.Document<unknown, {}, mongoose.FlatRecord<{
     createdAt: NativeDate;
     updatedAt: NativeDate;
@@ -45,10 +45,10 @@ export declare const ClientModel: mongoose.Model<{
     email?: string;
     telefono?: string;
     domicilio?: string;
-    localidad?: string;
-    cuitCuil?: string;
-    provincia?: string;
     fechaNacimiento?: NativeDate;
+    cuitCuil?: string;
+    localidad?: string;
+    provincia?: string;
 }>> & mongoose.FlatRecord<{
     createdAt: NativeDate;
     updatedAt: NativeDate;
@@ -61,10 +61,10 @@ export declare const ClientModel: mongoose.Model<{
     email?: string;
     telefono?: string;
     domicilio?: string;
-    localidad?: string;
-    cuitCuil?: string;
-    provincia?: string;
     fechaNacimiento?: NativeDate;
+    cuitCuil?: string;
+    localidad?: string;
+    provincia?: string;
 }> & {
     _id: mongoose.Types.ObjectId;
 } & {

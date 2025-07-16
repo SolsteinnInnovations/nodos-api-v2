@@ -3,7 +3,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.SucursalController = void 0;
 const sucursal_model_1 = require("../../data/mongo/models/sucursal.model");
 const ClerkProvider_1 = require("../../providers/ClerkProvider");
-const validatePlan_1 = require("../../helpers/validatePlan");
 class SucursalController {
     constructor() { }
     getAvailableSucursales = async (organizationId) => {
@@ -18,7 +17,7 @@ class SucursalController {
                 try {
                     const sucursales = await this.getAvailableSucursales(organizationId);
                     const { privateMetadata } = await ClerkProvider_1.ClerkProvider.getOrganizationClerk(organizationId);
-                    (0, validatePlan_1.ValidarPlanSucursal)(privateMetadata.plan, sucursales.length);
+                    // ValidarPlanSucursal(privateMetadata.plan, sucursales.length);
                 }
                 catch (error) {
                     res.status(400).json({

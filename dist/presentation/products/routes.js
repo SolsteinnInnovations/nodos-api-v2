@@ -5,7 +5,6 @@ const express_1 = require("express");
 const express_validator_1 = require("express-validator");
 const controller_1 = require("./controller");
 const validationResult_1 = require("../../middlewares/validationResult");
-const fileValidation_1 = require("../../middlewares/fileValidation");
 class Productroutes {
     static get routes() {
         const router = (0, express_1.Router)();
@@ -22,16 +21,19 @@ class Productroutes {
             (0, express_validator_1.body)("*.marca", "El campo marca es obligatorio").not().isEmpty(),
             (0, express_validator_1.body)("*.iva")
                 .optional()
-                .isFloat({ gt: 0 }).withMessage("El campo iva debe ser mayor a 0")
-                .isFloat({ lt: 100 }).withMessage("El campo iva debe ser menor a 100"),
-            (0, express_validator_1.body)("*.stock", "El campo stock es obligatorio").not().isEmpty(),
-            (0, express_validator_1.body)("*.stock", "El campo debe ser mayor a 0").isInt({ gt: 0 }),
+                .isFloat({ gt: 0 }).withMessage("El campo iva debe ser mayor a 0"),
+            //   .isFloat({ lt: 100 }).withMessage("El campo iva debe ser menor a 100"),
+            // body("*.stock", "El campo stock es obligatorio").not().isEmpty(),
+            // body("*.stock", "El campo debe ser mayor a 0").isInt({gt:0}),
             validationResult_1.validarCampos,
         ], controller.createProduct);
-        router.post("/bulk-upload", [
-            (0, fileValidation_1.fileValidation)("xlsx"),
-            validationResult_1.validarCampos
-        ], controller.bulkUploadProducts);
+        // router.post("/bulk-upload",
+        //   [
+        //     fileValidation("xlsx"),
+        //     validarCampos
+        //   ],
+        //   controller.bulkUploadProducts
+        // )
         router.get("/", controller.getProducts);
         router.get("/low", controller.lowStockProducts);
         router.get("/:term", controller.getProduct);

@@ -4,13 +4,11 @@ export declare const clientInvoiceModel: mongoose.Model<{
     updatedAt: NativeDate;
 } & {
     organizacion: string;
-    items: any[];
     numeroFactura: string;
     metodosDePago: any[];
+    items: any[];
     estado?: boolean;
-    fechaPago?: NativeDate;
     idSucursal?: mongoose.Types.ObjectId;
-    cliente?: mongoose.Types.ObjectId;
     detalles?: string;
     descuento?: number;
     recargo?: number;
@@ -19,8 +17,10 @@ export declare const clientInvoiceModel: mongoose.Model<{
     tipoFactura?: string;
     condicionIva?: string;
     fecha?: NativeDate;
+    fechaPago?: NativeDate;
     caja?: mongoose.Types.ObjectId;
     usuario?: string;
+    cliente?: mongoose.Types.ObjectId;
 }, {}, {}, {}, mongoose.Schema<any, mongoose.Model<any, any, any, any, any, any>, {}, {}, {}, {}, {
     timestamps: true;
 }, {
@@ -28,13 +28,11 @@ export declare const clientInvoiceModel: mongoose.Model<{
     updatedAt: NativeDate;
 } & {
     organizacion: string;
-    items: any[];
     numeroFactura: string;
     metodosDePago: any[];
+    items: any[];
     estado?: boolean;
-    fechaPago?: NativeDate;
     idSucursal?: mongoose.Types.ObjectId;
-    cliente?: mongoose.Types.ObjectId;
     detalles?: string;
     descuento?: number;
     recargo?: number;
@@ -43,20 +41,20 @@ export declare const clientInvoiceModel: mongoose.Model<{
     tipoFactura?: string;
     condicionIva?: string;
     fecha?: NativeDate;
+    fechaPago?: NativeDate;
     caja?: mongoose.Types.ObjectId;
     usuario?: string;
+    cliente?: mongoose.Types.ObjectId;
 }, mongoose.Document<unknown, {}, mongoose.FlatRecord<{
     createdAt: NativeDate;
     updatedAt: NativeDate;
 } & {
     organizacion: string;
-    items: any[];
     numeroFactura: string;
     metodosDePago: any[];
+    items: any[];
     estado?: boolean;
-    fechaPago?: NativeDate;
     idSucursal?: mongoose.Types.ObjectId;
-    cliente?: mongoose.Types.ObjectId;
     detalles?: string;
     descuento?: number;
     recargo?: number;
@@ -65,20 +63,20 @@ export declare const clientInvoiceModel: mongoose.Model<{
     tipoFactura?: string;
     condicionIva?: string;
     fecha?: NativeDate;
+    fechaPago?: NativeDate;
     caja?: mongoose.Types.ObjectId;
     usuario?: string;
+    cliente?: mongoose.Types.ObjectId;
 }>> & mongoose.FlatRecord<{
     createdAt: NativeDate;
     updatedAt: NativeDate;
 } & {
     organizacion: string;
-    items: any[];
     numeroFactura: string;
     metodosDePago: any[];
+    items: any[];
     estado?: boolean;
-    fechaPago?: NativeDate;
     idSucursal?: mongoose.Types.ObjectId;
-    cliente?: mongoose.Types.ObjectId;
     detalles?: string;
     descuento?: number;
     recargo?: number;
@@ -87,8 +85,10 @@ export declare const clientInvoiceModel: mongoose.Model<{
     tipoFactura?: string;
     condicionIva?: string;
     fecha?: NativeDate;
+    fechaPago?: NativeDate;
     caja?: mongoose.Types.ObjectId;
     usuario?: string;
+    cliente?: mongoose.Types.ObjectId;
 }> & {
     _id: mongoose.Types.ObjectId;
 } & {
