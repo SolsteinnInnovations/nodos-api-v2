@@ -10,7 +10,8 @@ const routes_3 = require("./products/routes");
 const routes_4 = require("./users/routes");
 const routes_5 = require("./sucursales/routes");
 const routes_6 = require("./clientInvoice/routes");
-const routes_7 = require("./person/routes");
+const routes_7 = require("./clients/routes");
+const routes_8 = require("./person/routes");
 class AppRoutes {
     static get routes() {
         const router = (0, express_1.Router)();
@@ -21,8 +22,9 @@ class AppRoutes {
         //TODO falta agregar el username en la ruta y el usuario creado y tambien el email en la creación, validar tambien catidad maxima para esa orgnaizaicon de usuarios
         router.use("/api/v1/user", routes_4.UserRoutes.routes);
         router.use("/api/v1/sucursal", routes_5.SucursalRoutes.routes);
+        router.use("/api/v1/client", routes_7.ClientRoutes.routes);
         router.use("/api/v1/clientinvoice", routes_6.ClienteInvoiceRoutes.routes);
-        router.use("/api/v1/person", routes_7.PersonRoutes.routes);
+        router.use("/api/v1/person", routes_8.PersonRoutes.routes);
         //TODO: revisra el "aftercreate" (put)
         //TODO: revisar el "aftercreate"
         // Rutas de productos por sucursal
