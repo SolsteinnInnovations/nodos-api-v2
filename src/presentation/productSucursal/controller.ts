@@ -7,7 +7,7 @@ import { ProductSucursalModel } from "../../data/mongo/models/productSucursal.mo
 
 export class ProductSucursalController {
   // DI
-  constructor() {}
+  constructor() { }
 
   createProductSucursal = async (req: Request, res: Response) => {
     try {
@@ -61,6 +61,43 @@ export class ProductSucursalController {
     }
   };
 
+  obtenerProductosConStockTotal = async (req: Request, res: Response) => {
+    try {
+      const resultado = await ProductSucursalModel.aggregate([
+        {
+          $group: {
+            _id: "$productoId",
+            stockTotal: { $sum: "$stock" }
+          }
+        },
+        {
+          $lookup: {
+            from: "products",
+            localField: "_id",
+            foreignField: "_id",
+            as: "producto"
+          }
+        },
+        { $unwind: "$producto" },
+        {
+          $project: {
+            productoId: "$producto._id",
+            nombre: "$producto.nombre",
+            descripcion: "$producto.descripcion",
+            stockTotal: 1,
+            _id: 0
+          }
+        }
+      ]);
+
+      res.status(200).json({ resultado });
+    } catch (error) {
+      res
+        .status(500)
+        .json({ message: "Error al obtener los productos", error });
+    }
+
+  };
   updateProductSucursal = async (req: Request, res: Response) => {
     try {
       const { id } = req.params;
