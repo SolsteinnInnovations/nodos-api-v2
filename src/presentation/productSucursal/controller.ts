@@ -59,6 +59,7 @@ export class ProductSucursalController {
         .status(500)
         .json({ message: "Error al obtener los productos", error });
     }
+    
   };
 
   obtenerProductosConStockTotal = async (req: Request, res: Response) => {
