@@ -86,11 +86,8 @@ export class SucursalController {
   updateSucursal = async (req: Request, res: Response) => {
     try {
       const { id } = req.params;
-      const { descripcion, ...rest } = req.body;
+      const { ...rest } = req.body;
       const updateData: any = { ...rest };
-
-      if (descripcion)
-        updateData.descripcion = descripcion.toLowerCase().trim();
 
       const sucursal = await SucursalModel.findByIdAndUpdate(
         { _id: id },
