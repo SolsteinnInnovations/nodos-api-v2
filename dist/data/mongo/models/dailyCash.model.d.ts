@@ -3,10 +3,10 @@ export declare const DailyCashModel: mongoose.Model<{
     createdAt: NativeDate;
     updatedAt: NativeDate;
 } & {
-    organizacion: string;
-    estado: boolean;
     importeInicioCaja: number;
+    estado: boolean;
     fechaHoraInicio: NativeDate;
+    organizacion: string;
     idSucursal?: mongoose.Types.ObjectId;
     fechaHoraCierre?: NativeDate;
     idUsuario?: string;
@@ -24,10 +24,10 @@ export declare const DailyCashModel: mongoose.Model<{
     createdAt: NativeDate;
     updatedAt: NativeDate;
 } & {
-    organizacion: string;
-    estado: boolean;
     importeInicioCaja: number;
+    estado: boolean;
     fechaHoraInicio: NativeDate;
+    organizacion: string;
     idSucursal?: mongoose.Types.ObjectId;
     fechaHoraCierre?: NativeDate;
     idUsuario?: string;
@@ -43,10 +43,10 @@ export declare const DailyCashModel: mongoose.Model<{
     createdAt: NativeDate;
     updatedAt: NativeDate;
 } & {
-    organizacion: string;
-    estado: boolean;
     importeInicioCaja: number;
+    estado: boolean;
     fechaHoraInicio: NativeDate;
+    organizacion: string;
     idSucursal?: mongoose.Types.ObjectId;
     fechaHoraCierre?: NativeDate;
     idUsuario?: string;
@@ -62,10 +62,10 @@ export declare const DailyCashModel: mongoose.Model<{
     createdAt: NativeDate;
     updatedAt: NativeDate;
 } & {
-    organizacion: string;
-    estado: boolean;
     importeInicioCaja: number;
+    estado: boolean;
     fechaHoraInicio: NativeDate;
+    organizacion: string;
     idSucursal?: mongoose.Types.ObjectId;
     fechaHoraCierre?: NativeDate;
     idUsuario?: string;

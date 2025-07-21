@@ -8,6 +8,7 @@ const mongoose_1 = __importDefault(require("mongoose"));
 const person_model_1 = require("../../data/mongo/models/person.model");
 class PersonController {
     constructor() { }
+    //TO DO Ver importancia de tener person en el sistema
     createPerson = async (req, res) => {
         try {
             const person = req.body;

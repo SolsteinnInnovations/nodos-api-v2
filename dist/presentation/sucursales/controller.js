@@ -77,10 +77,8 @@ class SucursalController {
     updateSucursal = async (req, res) => {
         try {
             const { id } = req.params;
-            const { descripcion, ...rest } = req.body;
+            const { ...rest } = req.body;
             const updateData = { ...rest };
-            if (descripcion)
-                updateData.descripcion = descripcion.toLowerCase().trim();
             const sucursal = await sucursal_model_1.SucursalModel.findByIdAndUpdate({ _id: id }, updateData, { new: true });
             if (sucursal) {
                 res.status(200).json({ sucursal, msg: "Sucursal  actualizado correctamente" });

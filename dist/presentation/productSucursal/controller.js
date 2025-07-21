@@ -49,6 +49,42 @@ class ProductSucursalController {
                 .json({ message: "Error al obtener los productos", error });
         }
     };
+    obtenerProductosConStockTotal = async (req, res) => {
+        try {
+            const resultado = await productSucursal_model_1.ProductSucursalModel.aggregate([
+                {
+                    $group: {
+                        _id: "$productoId",
+                        stockTotal: { $sum: "$stock" }
+                    }
+                },
+                {
+                    $lookup: {
+                        from: "products",
+                        localField: "_id",
+                        foreignField: "_id",
+                        as: "producto"
+                    }
+                },
+                { $unwind: "$producto" },
+                {
+                    $project: {
+                        productoId: "$producto._id",
+                        nombre: "$producto.nombre",
+                        descripcion: "$producto.descripcion",
+                        stockTotal: 1,
+                        _id: 0
+                    }
+                }
+            ]);
+            res.status(200).json({ resultado });
+        }
+        catch (error) {
+            res
+                .status(500)
+                .json({ message: "Error al obtener los productos", error });
+        }
+    };
     updateProductSucursal = async (req, res) => {
         try {
             const { id } = req.params;

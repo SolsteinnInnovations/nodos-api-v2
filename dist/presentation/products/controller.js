@@ -1,9 +1,13 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ProductController = void 0;
 const class_validator_1 = require("class-validator");
+const xlsx_1 = __importDefault(require("xlsx"));
 const product_model_1 = require("../../data/mongo/models/product.model");
-// import { validateAndFormatProducts } from "../../helpers/bulkValidation";
+const bulkValidation_1 = require("../../helpers/bulkValidation");
 const category_model_1 = require("../../data/mongo/models/category.model");
 const brand_model_1 = require("../../data/mongo/models/brand.model");
 const createLog_1 = require("../../helpers/createLog");
@@ -12,6 +16,7 @@ const productSucursal_model_1 = require("../../data/mongo/models/productSucursal
 class ProductController {
     // DI
     constructor() { }
+    //TO DO REVISAR FLUJO Y LOGICA DE CREATEPRODUCT 
     createProduct = async (req, res) => {
         try {
             const products = Array.isArray(req.body)
@@ -211,40 +216,38 @@ class ProductController {
             res.status(500).json({ message: "Error al eliminar el producto", error });
         }
     };
-    // bulkUploadProducts = async (req: Request, res: Response): Promise<void> => {
-    //   const file = req.files.File[0] || req.files.File;
-    //   const buffer = file.data;
-    //   try {
-    //     // Leer el archivo Excel
-    //     const workbook = xlsx.read(buffer, { type: "buffer" });
-    //     const worksheet = workbook.Sheets[workbook.SheetNames[0]];
-    //     const excel: WorkSheet = xlsx.utils.sheet_to_json(worksheet);
-    //     // Obtener organizationId del usuario logueado
-    //     const { organizationId } = req.user;
-    //     // Validar y formatear los productos
-    //     const { validProducts, errors } = await validateAndFormatProducts(
-    //       organizationId,
-    //       excel[0]
-    //     ); // Agregar await aquí
-    //     if (errors.length > 0) {
-    //       res.status(400).json({
-    //         message: "Errores en los datos del archivo",
-    //         errors,
-    //       });
-    //       return; // Ensure no further execution
-    //     }
-    //     // Insertar los productos validados
-    //     await ProductModel.insertMany(validProducts);
-    //     res.status(200).json({
-    //       msg: "Procesamiento completado",
-    //       newProducts: validProducts,
-    //     });
-    //   } catch (error) {
-    //     res
-    //       .status(500)
-    //       .json({ message: "Error al procesar el archivo: " + error.message });
-    //   }
-    // };
+    bulkUploadProducts = async (req, res) => {
+        const file = req.files.File[0] || req.files.File;
+        const buffer = file.data;
+        try {
+            // Leer el archivo Excel
+            const workbook = xlsx_1.default.read(buffer, { type: "buffer" });
+            const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+            const excel = xlsx_1.default.utils.sheet_to_json(worksheet);
+            // Obtener organizationId del usuario logueado
+            const { organizationId } = req.user;
+            // Validar y formatear los productos
+            const { validProducts, errors } = await (0, bulkValidation_1.validateAndFormatProducts)(organizationId, excel[0]); // Agregar await aquí
+            if (errors.length > 0) {
+                res.status(400).json({
+                    message: "Errores en los datos del archivo",
+                    errors,
+                });
+                return; // Ensure no further execution
+            }
+            // Insertar los productos validados
+            await product_model_1.ProductModel.insertMany(validProducts);
+            res.status(200).json({
+                msg: "Procesamiento completado",
+                newProducts: validProducts,
+            });
+        }
+        catch (error) {
+            res
+                .status(500)
+                .json({ message: "Error al procesar el archivo: " + error.message });
+        }
+    };
     lowStockProducts = async (req, res) => {
         try {
             const { organizationId } = req.user;

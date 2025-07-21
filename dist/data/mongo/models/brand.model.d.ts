@@ -3,40 +3,40 @@ export declare const BrandModel: mongoose.Model<{
     createdAt: NativeDate;
     updatedAt: NativeDate;
 } & {
-    habilitado: boolean;
-    organizacion: string;
     estado: boolean;
-    nombre: string;
+    organizacion: string;
     descripcion: string;
+    habilitado: boolean;
+    nombre: string;
 }, {}, {}, {}, mongoose.Schema<any, mongoose.Model<any, any, any, any, any, any>, {}, {}, {}, {}, {
     timestamps: true;
 }, {
     createdAt: NativeDate;
     updatedAt: NativeDate;
 } & {
-    habilitado: boolean;
-    organizacion: string;
     estado: boolean;
-    nombre: string;
+    organizacion: string;
     descripcion: string;
+    habilitado: boolean;
+    nombre: string;
 }, mongoose.Document<unknown, {}, mongoose.FlatRecord<{
     createdAt: NativeDate;
     updatedAt: NativeDate;
 } & {
-    habilitado: boolean;
-    organizacion: string;
     estado: boolean;
-    nombre: string;
+    organizacion: string;
     descripcion: string;
+    habilitado: boolean;
+    nombre: string;
 }>> & mongoose.FlatRecord<{
     createdAt: NativeDate;
     updatedAt: NativeDate;
 } & {
-    habilitado: boolean;
-    organizacion: string;
     estado: boolean;
-    nombre: string;
+    organizacion: string;
     descripcion: string;
+    habilitado: boolean;
+    nombre: string;
 }> & {
     _id: mongoose.Types.ObjectId;
 } & {

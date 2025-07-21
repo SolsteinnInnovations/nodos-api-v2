@@ -3,8 +3,8 @@ export declare const SucursalModel: mongoose.Model<{
     createdAt: NativeDate;
     updatedAt: NativeDate;
 } & {
-    organizacion: string;
     estado: boolean;
+    organizacion: string;
     descripcion: string;
     habilitadoParaVender: boolean;
     direccion: string;
@@ -14,8 +14,8 @@ export declare const SucursalModel: mongoose.Model<{
     createdAt: NativeDate;
     updatedAt: NativeDate;
 } & {
-    organizacion: string;
     estado: boolean;
+    organizacion: string;
     descripcion: string;
     habilitadoParaVender: boolean;
     direccion: string;
@@ -23,8 +23,8 @@ export declare const SucursalModel: mongoose.Model<{
     createdAt: NativeDate;
     updatedAt: NativeDate;
 } & {
-    organizacion: string;
     estado: boolean;
+    organizacion: string;
     descripcion: string;
     habilitadoParaVender: boolean;
     direccion: string;
@@ -32,8 +32,8 @@ export declare const SucursalModel: mongoose.Model<{
     createdAt: NativeDate;
     updatedAt: NativeDate;
 } & {
-    organizacion: string;
     estado: boolean;
+    organizacion: string;
     descripcion: string;
     habilitadoParaVender: boolean;
     direccion: string;
