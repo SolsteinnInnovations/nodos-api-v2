@@ -4,8 +4,8 @@ export declare const SucursalModel: mongoose.Model<{
     updatedAt: NativeDate;
 } & {
     organizacion: string;
-    descripcion: string;
     estado: boolean;
+    descripcion: string;
     habilitadoParaVender: boolean;
     direccion: string;
 }, {}, {}, {}, mongoose.Schema<any, mongoose.Model<any, any, any, any, any, any>, {}, {}, {}, {}, {
@@ -15,8 +15,8 @@ export declare const SucursalModel: mongoose.Model<{
     updatedAt: NativeDate;
 } & {
     organizacion: string;
-    descripcion: string;
     estado: boolean;
+    descripcion: string;
     habilitadoParaVender: boolean;
     direccion: string;
 }, mongoose.Document<unknown, {}, mongoose.FlatRecord<{
@@ -24,8 +24,8 @@ export declare const SucursalModel: mongoose.Model<{
     updatedAt: NativeDate;
 } & {
     organizacion: string;
-    descripcion: string;
     estado: boolean;
+    descripcion: string;
     habilitadoParaVender: boolean;
     direccion: string;
 }>> & mongoose.FlatRecord<{
@@ -33,8 +33,8 @@ export declare const SucursalModel: mongoose.Model<{
     updatedAt: NativeDate;
 } & {
     organizacion: string;
-    descripcion: string;
     estado: boolean;
+    descripcion: string;
     habilitadoParaVender: boolean;
     direccion: string;
 }> & {

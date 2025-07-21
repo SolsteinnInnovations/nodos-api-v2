@@ -12,13 +12,14 @@ const product_model_1 = require("../../data/mongo/models/product.model");
 class ClientInvoiceController {
     constructor() { }
     // Crear un clienteInvoice
+    // TO DO: CLIENTINVOICE RESTA PRODUCTSUCURSAL.STOCK
     createClientInvoice = async (req, res) => {
         try {
             let { caja = false, items = [], subtotal, total, descuento, recargo, ...rest } = req.body;
             const { organizationId, sucursalId, id } = req.user;
             // Default descuento y recargo a 0 si no vienen definidos
-            descuento = typeof descuento === 'number' ? descuento : 0;
-            recargo = typeof recargo === 'number' ? recargo : 0;
+            descuento = typeof descuento === "number" ? descuento : 0;
+            recargo = typeof recargo === "number" ? recargo : 0;
             // Validación de productos y cálculo de subtotales
             let calculatedSubtotal = 0;
             for (const item of items) {
@@ -33,7 +34,7 @@ class ClientInvoiceController {
                     });
                     return;
                 }
-                if (typeof product.precioVenta !== 'number') {
+                if (typeof product.precioVenta !== "number") {
                     res.status(400).json({
                         message: `Producto sin precioVenta definido: ${productoId}`,
                     });
@@ -94,11 +95,11 @@ class ClientInvoiceController {
             // Actualizar stock
             for (const item of items) {
                 const { id: productoId, cantidad } = item;
-                const productSucursal = await productSucursal_model_1.ProductSucursalModel.findOne({
+                const productSucursal = (await productSucursal_model_1.ProductSucursalModel.findOne({
                     producto: productoId,
                     sucursal: sucursalId,
                     organizacion: organizationId,
-                });
+                }));
                 if (!productSucursal) {
                     console.warn(`ProductoSucursal no encontrado para producto: ${productoId}`);
                     continue;
@@ -113,7 +114,7 @@ class ClientInvoiceController {
                     console.warn(`Producto general no encontrado: ${productoId}`);
                     continue;
                 }
-                product.stock = Math.max(0, (product.stock || 0) - cantidad);
+                // product.stock = Math.max(0, (product.stock || 0) - cantidad);
                 await product.save();
             }
             res.status(200).json({
@@ -124,7 +125,9 @@ class ClientInvoiceController {
         }
         catch (error) {
             console.error("Error creating clienteInvoice:", error);
-            res.status(500).json({ message: "Error al crear el clienteInvoice", error });
+            res
+                .status(500)
+                .json({ message: "Error al crear el clienteInvoice", error });
         }
     };
     // Obtener todos los clienteInvoices
@@ -145,15 +148,15 @@ class ClientInvoiceController {
     getAllClientInvoicesBySucursal = async (req, res) => {
         try {
             const { organizationId, sucursalId } = req.user; // Obtener organizationId del usuario logueado
-            const clienteInvoices = await clientInvoice_model_1.clientInvoiceModel.find({
+            const clienteInvoices = await clientInvoice_model_1.clientInvoiceModel
+                .find({
                 organizacion: organizationId,
                 idSucursal: sucursalId,
-            }).populate('cliente', 'nombre apellido');
-            ;
+            })
+                .populate("cliente", "nombre apellido");
             res.status(200).json({ clienteInvoices });
         }
-        catch (error) {
-        }
+        catch (error) { }
     };
     // Obtener todos los clienteInvoices
     getAllUnpaidClientInvoices = async (req, res) => {

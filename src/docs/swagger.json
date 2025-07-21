@@ -52,24 +52,7 @@
           "organizacion": { "type": "string" }
         }
       },
-      "Kit": {
-        "type": "object",
-        "properties": {
-          "nombre": { "type": "string" },
-          "descripcion": { "type": "string" },
-          "productos": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "producto": { "type": "string" },
-                "cantidad": { "type": "number" }
-              }
-            }
-          },
-          "precio": { "type": "number" }
-        }
-      },
+
       "ProductSucursal": {
         "type": "object",
         "properties": {
@@ -107,14 +90,7 @@
           "idSucursal": { "type": "string" }
         }
       },
-      "ClientInvoiceItem": {
-        "type": "object",
-        "properties": {
-          "codigo": { "type": "string" },
-          "cantidad": { "type": "number" },
-          "kit": { "type": "string" }
-        }
-      },
+
       "ClientInvoice": {
         "type": "object",
         "properties": {
@@ -192,9 +168,9 @@
         }
       }
     },
-    "/users": {
+    "/user": {
       "get": {
-        "summary": "Obtener todos los usuarios",
+        "summary": "Obtener todos los usuarios desde Clerk",
         "security": [{ "bearerAuth": [] }],
         "responses": {
           "200": {
@@ -209,29 +185,37 @@
             }
           }
         }
-      },
+      }
+    },
+    "/user/register": {
       "post": {
-        "summary": "Crear usuario",
+        "summary": "Registrar un nuevo usuario",
         "security": [{ "bearerAuth": [] }],
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
-              "schema": { "$ref": "#/components/schemas/User" }
+              "schema": { "$ref": "#/components/schemas/UserRegister" }
             }
           }
         },
         "responses": {
-          "201": { "description": "Usuario creado" }
+          "201": { "description": "Usuario registrado correctamente" },
+          "400": { "description": "Error en los datos de entrada" }
         }
       }
     },
-    "/users/{id}": {
+    "/user/{id}": {
       "get": {
         "summary": "Obtener usuario por ID",
         "security": [{ "bearerAuth": [] }],
         "parameters": [
-          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
         ],
         "responses": {
           "200": {
@@ -249,7 +233,12 @@
         "summary": "Actualizar usuario",
         "security": [{ "bearerAuth": [] }],
         "parameters": [
-          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
         ],
         "requestBody": {
           "required": true,
@@ -267,14 +256,19 @@
         "summary": "Eliminar usuario",
         "security": [{ "bearerAuth": [] }],
         "parameters": [
-          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
         ],
         "responses": {
           "204": { "description": "Usuario eliminado" }
         }
       }
     },
-    "/clients": {
+    "/client": {
       "get": {
         "summary": "Obtener todos los clientes",
         "security": [{ "bearerAuth": [] }],
@@ -308,12 +302,17 @@
         }
       }
     },
-    "/clients/{id}": {
+    "/client/{id}": {
       "get": {
         "summary": "Obtener cliente por ID",
         "security": [{ "bearerAuth": [] }],
         "parameters": [
-          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
         ],
         "responses": {
           "200": {
@@ -331,7 +330,12 @@
         "summary": "Actualizar cliente",
         "security": [{ "bearerAuth": [] }],
         "parameters": [
-          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
         ],
         "requestBody": {
           "required": true,
@@ -349,14 +353,19 @@
         "summary": "Eliminar cliente",
         "security": [{ "bearerAuth": [] }],
         "parameters": [
-          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
         ],
         "responses": {
           "204": { "description": "Cliente eliminado" }
         }
       }
     },
-    "/products": {
+    "/product": {
       "get": {
         "summary": "Obtener todos los productos",
         "security": [{ "bearerAuth": [] }],
@@ -390,12 +399,17 @@
         }
       }
     },
-    "/products/{id}": {
+    "/product/{id}": {
       "get": {
         "summary": "Obtener producto por ID",
         "security": [{ "bearerAuth": [] }],
         "parameters": [
-          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
         ],
         "responses": {
           "200": {
@@ -413,7 +427,12 @@
         "summary": "Actualizar producto",
         "security": [{ "bearerAuth": [] }],
         "parameters": [
-          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
         ],
         "requestBody": {
           "required": true,
@@ -431,95 +450,19 @@
         "summary": "Eliminar producto",
         "security": [{ "bearerAuth": [] }],
         "parameters": [
-          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
         ],
         "responses": {
           "204": { "description": "Producto eliminado" }
         }
       }
     },
-    "/kits": {
-      "get": {
-        "summary": "Obtener todos los kits",
-        "security": [{ "bearerAuth": [] }],
-        "responses": {
-          "200": {
-            "description": "Lista de kits",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": { "$ref": "#/components/schemas/Kit" }
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "summary": "Crear kit",
-        "security": [{ "bearerAuth": [] }],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": { "$ref": "#/components/schemas/Kit" }
-            }
-          }
-        },
-        "responses": {
-          "201": { "description": "Kit creado" }
-        }
-      }
-    },
-    "/kits/{id}": {
-      "get": {
-        "summary": "Obtener kit por ID",
-        "security": [{ "bearerAuth": [] }],
-        "parameters": [
-          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
-        ],
-        "responses": {
-          "200": {
-            "description": "Kit encontrado",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/Kit" }
-              }
-            }
-          },
-          "404": { "description": "Kit no encontrado" }
-        }
-      },
-      "put": {
-        "summary": "Actualizar kit",
-        "security": [{ "bearerAuth": [] }],
-        "parameters": [
-          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": { "$ref": "#/components/schemas/Kit" }
-            }
-          }
-        },
-        "responses": {
-          "200": { "description": "Kit actualizado" }
-        }
-      },
-      "delete": {
-        "summary": "Eliminar kit",
-        "security": [{ "bearerAuth": [] }],
-        "parameters": [
-          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
-        ],
-        "responses": {
-          "204": { "description": "Kit eliminado" }
-        }
-      }
-    },
+
     "/sucursal": {
       "get": {
         "summary": "Obtener todas las sucursales",
@@ -554,12 +497,17 @@
         }
       }
     },
-    "/sucursales/{id}": {
+    "/sucursal/{id}": {
       "get": {
         "summary": "Obtener sucursal por ID",
         "security": [{ "bearerAuth": [] }],
         "parameters": [
-          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
         ],
         "responses": {
           "200": {
@@ -577,7 +525,12 @@
         "summary": "Actualizar sucursal",
         "security": [{ "bearerAuth": [] }],
         "parameters": [
-          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
         ],
         "requestBody": {
           "required": true,
@@ -595,7 +548,12 @@
         "summary": "Eliminar sucursal",
         "security": [{ "bearerAuth": [] }],
         "parameters": [
-          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
         ],
         "responses": {
           "204": { "description": "Sucursal eliminada" }
@@ -641,7 +599,12 @@
         "summary": "Obtener cierre de caja por ID",
         "security": [{ "bearerAuth": [] }],
         "parameters": [
-          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
         ],
         "responses": {
           "200": {
@@ -659,7 +622,12 @@
         "summary": "Actualizar cierre de caja",
         "security": [{ "bearerAuth": [] }],
         "parameters": [
-          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
         ],
         "requestBody": {
           "required": true,
@@ -677,14 +645,19 @@
         "summary": "Eliminar cierre de caja",
         "security": [{ "bearerAuth": [] }],
         "parameters": [
-          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
         ],
         "responses": {
           "204": { "description": "Cierre de caja eliminado" }
         }
       }
     },
-    "/client-invoices": {
+    "/clientinvoice": {
       "get": {
         "summary": "Obtener todas las facturas de clientes",
         "security": [{ "bearerAuth": [] }],
@@ -718,12 +691,17 @@
         }
       }
     },
-    "/client-invoices/{id}": {
+    "/clientinvoice/{id}": {
       "get": {
         "summary": "Obtener factura de cliente por ID",
         "security": [{ "bearerAuth": [] }],
         "parameters": [
-          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
         ],
         "responses": {
           "200": {
@@ -741,7 +719,12 @@
         "summary": "Actualizar factura de cliente",
         "security": [{ "bearerAuth": [] }],
         "parameters": [
-          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
         ],
         "requestBody": {
           "required": true,
@@ -759,7 +742,12 @@
         "summary": "Eliminar factura de cliente",
         "security": [{ "bearerAuth": [] }],
         "parameters": [
-          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
         ],
         "responses": {
           "204": { "description": "Factura eliminada" }

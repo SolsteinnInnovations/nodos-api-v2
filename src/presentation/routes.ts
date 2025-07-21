@@ -9,6 +9,7 @@ import { Productroutes } from "./products/routes";
 import { UserRoutes } from "./users/routes";
 import { SucursalRoutes } from "./sucursales/routes";
 import { ClienteInvoiceRoutes } from "./clientInvoice/routes";
+import { ClientRoutes } from "./clients/routes";
 import { PersonRoutes } from "./person/routes";
 
 
@@ -30,6 +31,7 @@ export class AppRoutes {
     
     router.use("/api/v1/user", UserRoutes.routes);
     router.use("/api/v1/sucursal", SucursalRoutes.routes);
+    router.use("/api/v1/client", ClientRoutes.routes);
     router.use("/api/v1/clientinvoice", ClienteInvoiceRoutes.routes);
     router.use("/api/v1/person", PersonRoutes.routes);
 

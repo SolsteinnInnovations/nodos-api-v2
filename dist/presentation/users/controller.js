@@ -68,41 +68,6 @@ class UserController {
             });
         }
     };
-    postUser = async (req, res) => {
-        try {
-            const { organizationId } = req.user;
-            // if(usuario[0] !== 'Admin' || !organizationId)   { 
-            //   res.status(400).json({ message: "User must be Admin or have and organizationId" });
-            //   return
-            // }
-            const formData = req.body;
-            const clerkUser = {
-                ...formData,
-                organizationId
-            };
-            // await ClerkProvider.createUserClerk(clerkUser);
-            res.status(200).json({ clerkUser });
-            return;
-        }
-        catch (error) {
-            console.log(error);
-            res.status(500).json({ error: error.message });
-        }
-    };
-    getUser = async (req, res) => {
-        try {
-            const { id } = req.params;
-            const user = await user_model_1.UserModel.findById(id);
-            if (!user) {
-                res.status(404).json({ message: "User not found" });
-                return;
-            }
-            res.status(200).json({ user });
-        }
-        catch (error) {
-            res.status(500).json({ message: "Error al obtener el usuario", error });
-        }
-    };
     updateUser = async (req, res) => {
         try {
             const { username } = req.params;
@@ -133,7 +98,9 @@ class UserController {
                 return;
             }
             // Buscar usuario en Clerk por username
-            const clerkUsersResponse = await express_1.clerkClient.users.getUserList({ username: [username] });
+            const clerkUsersResponse = await express_1.clerkClient.users.getUserList({
+                username: [username],
+            });
             const clerkUsers = clerkUsersResponse.data;
             if (clerkUsers.length === 0) {
                 res.status(404).json({ message: "User not found in Clerk" });
@@ -144,7 +111,7 @@ class UserController {
             await express_1.clerkClient.users.updateUser(clerkUser.id, {
                 username: updateData.username,
                 firstName: updateData.name,
-                password: updateData.password
+                password: updateData.password,
             });
             // Actualizar metadata en Clerk
             await express_1.clerkClient.users.updateUserMetadata(clerkUser.id, {
@@ -153,16 +120,9 @@ class UserController {
             res.status(200).json({ user, msg: "Usuario actualizado correctamente" });
         }
         catch (error) {
-            res.status(500).json({ message: "Error al actualizar el usuario", error });
-        }
-    };
-    getUsers = async (req, res) => {
-        try {
-            const users = await user_model_1.UserModel.find();
-            res.status(200).json(users);
-        }
-        catch (error) {
-            res.status(500).json({ message: 'Error fetching users', error: error });
+            res
+                .status(500)
+                .json({ message: "Error al actualizar el usuario", error });
         }
     };
     getClerkUsers = async (req, res) => {
@@ -178,10 +138,12 @@ class UserController {
             const usersWithMemberships = [];
             // Recorrer cada usuario y obtener sus membresías de organizaciones
             for (const user of users) {
-                const membershipsResponse = await express_1.clerkClient.users.getOrganizationMembershipList({ userId: user.id });
+                const membershipsResponse = await express_1.clerkClient.users.getOrganizationMembershipList({
+                    userId: user.id,
+                });
                 usersWithMemberships.push({
                     user,
-                    memberships: membershipsResponse.data
+                    memberships: membershipsResponse.data,
                 });
             }
             res.status(200).json({ users: usersWithMemberships });
@@ -199,30 +161,6 @@ class UserController {
         }
         catch (error) {
             res.status(500).json({ message: "Error al obtener el usuario", error });
-        }
-    };
-    deleteUser = async (req, res) => {
-        try {
-            const { username } = req.params;
-            // Eliminar usuario de MongoDB
-            const user = await user_model_1.UserModel.findOneAndDelete({ username: username.toLowerCase().trim() });
-            if (!user) {
-                res.status(404).json({ message: "Usuario no encontrado en MongoDB" });
-                return;
-            }
-            // Buscar usuario en Clerk
-            const clerkUser = await express_1.clerkClient.users.getUserList({ username: [username] });
-            if (!clerkUser || clerkUser.data.length === 0) {
-                res.status(404).json({ message: "Usuario no encontrado en Clerk" });
-                return;
-            }
-            // Eliminar usuario en Clerk
-            await express_1.clerkClient.users.deleteUser(clerkUser.data[0].id);
-            res.status(200).json({ message: "Usuario eliminado correctamente" });
-        }
-        catch (error) {
-            console.error("Error eliminando usuario:", error);
-            res.status(500).json({ message: "Error al eliminar el usuario", error });
         }
     };
 }

@@ -4,6 +4,7 @@ exports.ProductSucursalController = void 0;
 const createLog_1 = require("../../helpers/createLog");
 const logSeverity_enum_1 = require("../../enums/logSeverity.enum");
 const productSucursal_model_1 = require("../../data/mongo/models/productSucursal.model");
+// import { ProductModel } from "../../data/mongo/models/product.model";
 class ProductSucursalController {
     // DI
     constructor() { }
@@ -12,7 +13,7 @@ class ProductSucursalController {
             const productsSucursal = req.body;
             const newProductsSucursalPromise = [];
             for (const productSucursal of productsSucursal) {
-                const { productoId, sucursalId, stock, precioCosto, precioVentaSucursal } = productSucursal;
+                const { productoId, sucursalId, stock, precioCosto, precioVentaSucursal, } = productSucursal;
                 const newProductSucursal = {
                     stock,
                     precioCosto,
@@ -35,13 +36,17 @@ class ProductSucursalController {
     };
     getProductsSucursal = async (req, res) => {
         try {
-            const products = await productSucursal_model_1.ProductSucursalModel.find({ organizacion: req.user.organizationId, })
-                .populate('producto');
-            // .populate('producto.marca') // Esto trae los datos completos de la categoría
+            const products = await productSucursal_model_1.ProductSucursalModel.find({
+                organizacion: req.user.organizationId,
+            })
+                .populate("producto")
+                .populate("producto.marca"); // Esto trae los datos completos de la categoría
             res.status(200).json({ products });
         }
         catch (error) {
-            res.status(500).json({ message: "Error al obtener los productos", error });
+            res
+                .status(500)
+                .json({ message: "Error al obtener los productos", error });
         }
     };
     updateProductSucursal = async (req, res) => {
@@ -67,7 +72,9 @@ class ProductSucursalController {
         }
         catch (error) {
             (0, createLog_1.createLog)(logSeverity_enum_1.Severidad.ERROR, `Error al actualizar ProductoSucursal con id ${req.params.id} - Usuario ${req.user.username}`);
-            res.status(500).json({ message: "Error al actualizar el productoSucursal", error });
+            res
+                .status(500)
+                .json({ message: "Error al actualizar el productoSucursal", error });
         }
     };
     deleteProductSucursal = async (req, res) => {
@@ -95,10 +102,11 @@ class ProductSucursalController {
         }
         catch (error) {
             (0, createLog_1.createLog)(logSeverity_enum_1.Severidad.ERROR, `Error al eliminar ProductoSucursal con id ${req.params.id} - Usuario ${req.user.username}`);
-            res.status(500).json({ message: "Error al eliminar el productoSucursal", error });
+            res
+                .status(500)
+                .json({ message: "Error al eliminar el productoSucursal", error });
         }
     };
 }
 exports.ProductSucursalController = ProductSucursalController;
-;
 //# sourceMappingURL=controller.js.map

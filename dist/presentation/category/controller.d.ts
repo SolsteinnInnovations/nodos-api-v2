@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import { Request, Response } from "express";
 export declare class CategoryController {
     constructor();
     createCategory: (req: Request, res: Response) => Promise<void>;

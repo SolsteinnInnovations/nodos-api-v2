@@ -3,16 +3,16 @@ export declare const ClientModel: mongoose.Model<{
     createdAt: NativeDate;
     updatedAt: NativeDate;
 } & {
-    nombre: string;
-    estado: boolean;
     emailValidated: boolean;
+    estado: boolean;
+    nombre: string;
     apellido: string;
     organizacion?: string;
     email?: string;
-    telefono?: string;
-    domicilio?: string;
-    localidad?: string;
     cuitCuil?: string;
+    domicilio?: string;
+    telefono?: string;
+    localidad?: string;
     provincia?: string;
     fechaNacimiento?: NativeDate;
 }, {}, {}, {}, mongoose.Schema<any, mongoose.Model<any, any, any, any, any, any>, {}, {}, {}, {}, {
@@ -21,48 +21,48 @@ export declare const ClientModel: mongoose.Model<{
     createdAt: NativeDate;
     updatedAt: NativeDate;
 } & {
-    nombre: string;
-    estado: boolean;
     emailValidated: boolean;
+    estado: boolean;
+    nombre: string;
     apellido: string;
     organizacion?: string;
     email?: string;
-    telefono?: string;
-    domicilio?: string;
-    localidad?: string;
     cuitCuil?: string;
+    domicilio?: string;
+    telefono?: string;
+    localidad?: string;
     provincia?: string;
     fechaNacimiento?: NativeDate;
 }, mongoose.Document<unknown, {}, mongoose.FlatRecord<{
     createdAt: NativeDate;
     updatedAt: NativeDate;
 } & {
-    nombre: string;
-    estado: boolean;
     emailValidated: boolean;
+    estado: boolean;
+    nombre: string;
     apellido: string;
     organizacion?: string;
     email?: string;
-    telefono?: string;
-    domicilio?: string;
-    localidad?: string;
     cuitCuil?: string;
+    domicilio?: string;
+    telefono?: string;
+    localidad?: string;
     provincia?: string;
     fechaNacimiento?: NativeDate;
 }>> & mongoose.FlatRecord<{
     createdAt: NativeDate;
     updatedAt: NativeDate;
 } & {
-    nombre: string;
-    estado: boolean;
     emailValidated: boolean;
+    estado: boolean;
+    nombre: string;
     apellido: string;
     organizacion?: string;
     email?: string;
-    telefono?: string;
-    domicilio?: string;
-    localidad?: string;
     cuitCuil?: string;
+    domicilio?: string;
+    telefono?: string;
+    localidad?: string;
     provincia?: string;
     fechaNacimiento?: NativeDate;
 }> & {

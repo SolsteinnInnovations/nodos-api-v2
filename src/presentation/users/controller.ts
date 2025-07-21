@@ -1,12 +1,12 @@
 import { Request, Response } from "express";
 import { clerkClient } from "@clerk/express";
-import bcrypt from 'bcrypt';
+import bcrypt from "bcrypt";
 import { UserModel } from "../../data/mongo/models/user.model";
 import { IUser } from "../../interfaces/IClerkUserData.interface";
 import { ClerkProvider } from "../../providers/ClerkProvider";
 
 export class UserController {
-  constructor() { }
+  constructor() {}
   registerUser = async (req: Request, res: Response): Promise<void> => {
     const {
       email,
@@ -17,7 +17,7 @@ export class UserController {
     } = req.body as IUser;
 
     // Validación básica
-    if (!email  || !username  || !organizationId || !sucursalId) {
+    if (!email || !username || !organizationId || !sucursalId) {
       res.status(400).json({ msg: "Faltan campos obligatorios." });
       return;
     }
@@ -59,7 +59,6 @@ export class UserController {
 
       // Asignar rol en la organización si es necesario
 
-
       // await ClerkProvider.createMembership({
       //   organizationId,
       //   userId: clerkUser.id,
@@ -79,6 +78,7 @@ export class UserController {
     }
   };
 
+<<<<<<< HEAD
   // TO DO: REVISAR POST USER SINO LIMPIAR
   postUser = async (req: Request, res: Response) => {
     try {
@@ -120,6 +120,8 @@ export class UserController {
     }
   };
 
+=======
+>>>>>>> dev
   updateUser = async (req: Request, res: Response) => {
     try {
       const { username } = req.params;
@@ -156,7 +158,9 @@ export class UserController {
       }
 
       // Buscar usuario en Clerk por username
-      const clerkUsersResponse = await clerkClient.users.getUserList({ username: [username] });
+      const clerkUsersResponse = await clerkClient.users.getUserList({
+        username: [username],
+      });
       const clerkUsers = clerkUsersResponse.data;
       if (clerkUsers.length === 0) {
         res.status(404).json({ message: "User not found in Clerk" });
@@ -168,7 +172,7 @@ export class UserController {
       await clerkClient.users.updateUser(clerkUser.id, {
         username: updateData.username,
         firstName: updateData.name,
-        password: updateData.password
+        password: updateData.password,
       });
 
       // Actualizar metadata en Clerk
@@ -178,18 +182,11 @@ export class UserController {
 
       res.status(200).json({ user, msg: "Usuario actualizado correctamente" });
     } catch (error) {
-      res.status(500).json({ message: "Error al actualizar el usuario", error });
+      res
+        .status(500)
+        .json({ message: "Error al actualizar el usuario", error });
     }
   };
-
-  getUsers = async (req: Request, res: Response) => {
-    try {
-      const users = await UserModel.find();
-      res.status(200).json(users);
-    } catch (error) {
-      res.status(500).json({ message: 'Error fetching users', error: error });
-    }
-  }
 
   getClerkUsers = async (req: Request, res: Response) => {
     try {
@@ -207,10 +204,13 @@ export class UserController {
 
       // Recorrer cada usuario y obtener sus membresías de organizaciones
       for (const user of users) {
-        const membershipsResponse = await clerkClient.users.getOrganizationMembershipList({ userId: user.id });
+        const membershipsResponse =
+          await clerkClient.users.getOrganizationMembershipList({
+            userId: user.id,
+          });
         usersWithMemberships.push({
           user,
-          memberships: membershipsResponse.data
+          memberships: membershipsResponse.data,
         });
       }
 
@@ -221,7 +221,6 @@ export class UserController {
     }
   };
 
-
   getClerkUser = async (req: Request, res: Response) => {
     try {
       const { id } = req.params;
@@ -230,40 +229,34 @@ export class UserController {
     } catch (error) {
       res.status(500).json({ message: "Error al obtener el usuario", error });
     }
-  }
-
-  deleteUser = async (req: Request, res: Response) => {
-    try {
-      const { username } = req.params;
-
-      // Eliminar usuario de MongoDB
-      const user = await UserModel.findOneAndDelete({ username: username.toLowerCase().trim() });
-      if (!user) {
-        res.status(404).json({ message: "Usuario no encontrado en MongoDB" });
-        return;
-      }
-
-      // Buscar usuario en Clerk
-      const clerkUser = await clerkClient.users.getUserList({ username: [username] });
-
-      if (!clerkUser || clerkUser.data.length === 0) {
-        res.status(404).json({ message: "Usuario no encontrado en Clerk" });
-        return;
-      }
-
-      // Eliminar usuario en Clerk
-      await clerkClient.users.deleteUser(clerkUser.data[0].id);
-
-      res.status(200).json({ message: "Usuario eliminado correctamente" });
-    } catch (error) {
-      console.error("Error eliminando usuario:", error);
-      res.status(500).json({ message: "Error al eliminar el usuario", error });
-    }
   };
 
+  // deleteUser = async (req: Request, res: Response) => {
+  //   try {
+  //     const { username } = req.params;
 
+  //     // Eliminar usuario de MongoDB
+  //     const user = await UserModel.findOneAndDelete({ username: username.toLowerCase().trim() });
+  //     if (!user) {
+  //       res.status(404).json({ message: "Usuario no encontrado en MongoDB" });
+  //       return;
+  //     }
 
+  //     // Buscar usuario en Clerk
+  //     const clerkUser = await clerkClient.users.getUserList({ username: [username] });
 
+  //     if (!clerkUser || clerkUser.data.length === 0) {
+  //       res.status(404).json({ message: "Usuario no encontrado en Clerk" });
+  //       return;
+  //     }
 
+  //     // Eliminar usuario en Clerk
+  //     await clerkClient.users.deleteUser(clerkUser.data[0].id);
 
+  //     res.status(200).json({ message: "Usuario eliminado correctamente" });
+  //   } catch (error) {
+  //     console.error("Error eliminando usuario:", error);
+  //     res.status(500).json({ message: "Error al eliminar el usuario", error });
+  //   }
+  // };
 }

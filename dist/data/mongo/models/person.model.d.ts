@@ -4,11 +4,11 @@ export declare const PersonModel: mongoose.Model<{
     updatedAt: NativeDate;
 } & {
     organizacion: string;
-    nombre: string;
     email: string;
-    telefono: string;
-    domicilio: string;
+    nombre: string;
     apellido: string;
+    domicilio: string;
+    telefono: string;
     fechaNacimiento: NativeDate;
     dni: string;
     estado?: boolean;
@@ -21,11 +21,11 @@ export declare const PersonModel: mongoose.Model<{
     updatedAt: NativeDate;
 } & {
     organizacion: string;
-    nombre: string;
     email: string;
-    telefono: string;
-    domicilio: string;
+    nombre: string;
     apellido: string;
+    domicilio: string;
+    telefono: string;
     fechaNacimiento: NativeDate;
     dni: string;
     estado?: boolean;
@@ -36,11 +36,11 @@ export declare const PersonModel: mongoose.Model<{
     updatedAt: NativeDate;
 } & {
     organizacion: string;
-    nombre: string;
     email: string;
-    telefono: string;
-    domicilio: string;
+    nombre: string;
     apellido: string;
+    domicilio: string;
+    telefono: string;
     fechaNacimiento: NativeDate;
     dni: string;
     estado?: boolean;
@@ -51,11 +51,11 @@ export declare const PersonModel: mongoose.Model<{
     updatedAt: NativeDate;
 } & {
     organizacion: string;
-    nombre: string;
     email: string;
-    telefono: string;
-    domicilio: string;
+    nombre: string;
     apellido: string;
+    domicilio: string;
+    telefono: string;
     fechaNacimiento: NativeDate;
     dni: string;
     estado?: boolean;

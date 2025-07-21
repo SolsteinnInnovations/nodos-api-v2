@@ -4,8 +4,8 @@ export declare const CategoryModel: mongoose.Model<{
     updatedAt: NativeDate;
 } & {
     organizacion: string;
-    nombre: string;
     estado: boolean;
+    nombre: string;
     descripcion?: string;
 }, {}, {}, {}, mongoose.Schema<any, mongoose.Model<any, any, any, any, any, any>, {}, {}, {}, {}, {
     timestamps: true;
@@ -15,24 +15,24 @@ export declare const CategoryModel: mongoose.Model<{
     updatedAt: NativeDate;
 } & {
     organizacion: string;
-    nombre: string;
     estado: boolean;
+    nombre: string;
     descripcion?: string;
 }, mongoose.Document<unknown, {}, mongoose.FlatRecord<{
     createdAt: NativeDate;
     updatedAt: NativeDate;
 } & {
     organizacion: string;
-    nombre: string;
     estado: boolean;
+    nombre: string;
     descripcion?: string;
 }>> & mongoose.FlatRecord<{
     createdAt: NativeDate;
     updatedAt: NativeDate;
 } & {
     organizacion: string;
-    nombre: string;
     estado: boolean;
+    nombre: string;
     descripcion?: string;
 }> & {
     _id: mongoose.Types.ObjectId;

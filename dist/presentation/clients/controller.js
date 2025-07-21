@@ -84,9 +84,18 @@ class ClientController {
     updateClient = async (req, res) => {
         try {
             const { id } = req.params;
-            const { nombre, ...rest } = req.body;
+            const { nombre, telefono, ...rest } = req.body;
             const { organizationId } = req.user; // Obtener organizationId del usuario logueado
             const updateData = { ...rest };
+            if (telefono) {
+                const numeroRegex = /^-?(?:\d+\.?\d*|\.\d+)$/;
+                if (numeroRegex.test(telefono)) {
+                    updateData.telefono = telefono;
+                }
+                else {
+                    throw new Error('El telefono: ' + telefono + " no es un telefono valido");
+                }
+            }
             if (nombre) {
                 updateData.nombre = nombre.toLowerCase().trim();
             }

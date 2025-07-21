@@ -3,7 +3,6 @@ export interface IProduct {
     codigo: string;
     nombre: string;
     descripcion?: string;
-    stock: number;
     precioLista: number;
     precioVenta: number;
     poseeIva: boolean;

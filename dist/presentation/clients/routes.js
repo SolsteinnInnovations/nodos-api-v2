@@ -38,7 +38,8 @@ class ClientRoutes {
                 .withMessage("El domicilio no puede estar vacío"),
             (0, express_validator_1.body)("telefono")
                 .optional()
-                .isMobilePhone("es-AR")
+                .not()
+                .isEmpty()
                 .withMessage("El teléfono debe ser un número válido"),
             (0, express_validator_1.body)("email")
                 .optional()

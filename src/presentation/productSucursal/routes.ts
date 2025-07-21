@@ -27,6 +27,7 @@ export class ProducSucursaltroutes {
 
     // Obtener productos por sucursal
     router.get("/", controller.getProductsSucursal);
+    router.get("/stock", controller.obtenerProductosConStockTotal);
 
     // Actualizar productoSucursal
     router.put(
