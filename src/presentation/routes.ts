@@ -2,7 +2,7 @@ import { Router } from "express";
 
 import { validarCampos } from "../middlewares/validationResult";
 import { authenticateUser } from "../middlewares/jwt";
-
+import { DailyCashRoutes } from "./dailyCash/routes";
 import { ProducSucursaltroutes } from './productSucursal/routes';
 import { Authroutes } from "./auth/routes";
 import { Productroutes } from "./products/routes";
@@ -34,6 +34,7 @@ export class AppRoutes {
     router.use("/api/v1/client", ClientRoutes.routes);
     router.use("/api/v1/clientinvoice", ClienteInvoiceRoutes.routes);
     router.use("/api/v1/person", PersonRoutes.routes);
+    router.use("/api/v1/dailycash", DailyCashRoutes.routes);
 
     // Rutas de productos por sucursal
     router.use(

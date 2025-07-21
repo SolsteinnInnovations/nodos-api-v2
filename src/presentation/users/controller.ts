@@ -78,50 +78,8 @@ export class UserController {
     }
   };
 
-<<<<<<< HEAD
-  // TO DO: REVISAR POST USER SINO LIMPIAR
-  postUser = async (req: Request, res: Response) => {
-    try {
 
-      const { organizationId } = req.user;
 
-      // if(usuario[0] !== 'Admin' || !organizationId)   { 
-      //   res.status(400).json({ message: "User must be Admin or have and organizationId" });
-      //   return
-      // }
-
-      const formData = req.body as IUser
-      const clerkUser = {
-        ...formData,
-        organizationId
-      }
-
-      // await ClerkProvider.createUserClerk(clerkUser);
-
-      res.status(200).json({ clerkUser });
-      return;
-    } catch (error) {
-      console.log(error)
-      res.status(500).json({ error: error.message });
-    }
-  }
-
-  getUser = async (req: Request, res: Response) => {
-    try {
-      const { id } = req.params;
-      const user = await UserModel.findById(id);
-      if (!user) {
-        res.status(404).json({ message: "User not found" });
-        return;
-      }
-      res.status(200).json({ user });
-    } catch (error) {
-      res.status(500).json({ message: "Error al obtener el usuario", error });
-    }
-  };
-
-=======
->>>>>>> dev
   updateUser = async (req: Request, res: Response) => {
     try {
       const { username } = req.params;

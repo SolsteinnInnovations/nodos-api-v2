@@ -4,8 +4,8 @@ export declare const PersonModel: mongoose.Model<{
     updatedAt: NativeDate;
 } & {
     organizacion: string;
-    email: string;
     nombre: string;
+    email: string;
     apellido: string;
     domicilio: string;
     telefono: string;
@@ -21,8 +21,8 @@ export declare const PersonModel: mongoose.Model<{
     updatedAt: NativeDate;
 } & {
     organizacion: string;
-    email: string;
     nombre: string;
+    email: string;
     apellido: string;
     domicilio: string;
     telefono: string;
@@ -36,8 +36,8 @@ export declare const PersonModel: mongoose.Model<{
     updatedAt: NativeDate;
 } & {
     organizacion: string;
-    email: string;
     nombre: string;
+    email: string;
     apellido: string;
     domicilio: string;
     telefono: string;
@@ -51,8 +51,8 @@ export declare const PersonModel: mongoose.Model<{
     updatedAt: NativeDate;
 } & {
     organizacion: string;
-    email: string;
     nombre: string;
+    email: string;
     apellido: string;
     domicilio: string;
     telefono: string;

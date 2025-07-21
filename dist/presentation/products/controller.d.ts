@@ -6,5 +6,6 @@ export declare class ProductController {
     getProduct: (req: Request, res: Response) => Promise<void>;
     updateProduct: (req: Request, res: Response) => Promise<void>;
     deleteProduct: (req: Request, res: Response) => Promise<void>;
+    bulkUploadProducts: (req: Request, res: Response) => Promise<void>;
     lowStockProducts: (req: Request, res: Response) => Promise<void>;
 }
