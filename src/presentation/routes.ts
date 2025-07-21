@@ -29,14 +29,11 @@ export class AppRoutes {
       Productroutes.routes
     );
     
-    //TODO falta agregar el username en la ruta y el usuario creado y tambien el email en la creación, validar tambien catidad maxima para esa orgnaizaicon de usuarios
     router.use("/api/v1/user", UserRoutes.routes);
     router.use("/api/v1/sucursal", SucursalRoutes.routes);
     router.use("/api/v1/client", ClientRoutes.routes);
     router.use("/api/v1/clientinvoice", ClienteInvoiceRoutes.routes);
     router.use("/api/v1/person", PersonRoutes.routes);
-    //TODO: revisra el "aftercreate" (put)
-    //TODO: revisar el "aftercreate"
 
     // Rutas de productos por sucursal
     router.use(

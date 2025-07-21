@@ -78,6 +78,8 @@ export class UserController {
     }
   };
 
+
+
   updateUser = async (req: Request, res: Response) => {
     try {
       const { username } = req.params;
