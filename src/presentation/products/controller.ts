@@ -3,7 +3,7 @@ import { isMongoId, isNumber } from "class-validator";
 import xlsx, { WorkSheet } from "xlsx";
 import { ProductModel } from "../../data/mongo/models/product.model";
 import { IProduct, IProductInvalid } from "../../interfaces/IProduct.interface";
-// import { validateAndFormatProducts } from "../../helpers/bulkValidation";
+import { validateAndFormatProducts } from "../../helpers/bulkValidation";
 import { CategoryModel } from "../../data/mongo/models/category.model";
 import { BrandModel } from "../../data/mongo/models/brand.model";
 import { createLog } from "../../helpers/createLog";
@@ -252,46 +252,46 @@ export class ProductController {
     }
   };
 
-  // bulkUploadProducts = async (req: Request, res: Response): Promise<void> => {
-  //   const file = req.files.File[0] || req.files.File;
-  //   const buffer = file.data;
+  bulkUploadProducts = async (req: Request, res: Response): Promise<void> => {
+    const file = req.files.File[0] || req.files.File;
+    const buffer = file.data;
 
-  //   try {
-  //     // Leer el archivo Excel
-  //     const workbook = xlsx.read(buffer, { type: "buffer" });
-  //     const worksheet = workbook.Sheets[workbook.SheetNames[0]];
-  //     const excel: WorkSheet = xlsx.utils.sheet_to_json(worksheet);
+    try {
+      // Leer el archivo Excel
+      const workbook = xlsx.read(buffer, { type: "buffer" });
+      const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+      const excel: WorkSheet = xlsx.utils.sheet_to_json(worksheet);
 
-  //     // Obtener organizationId del usuario logueado
-  //     const { organizationId } = req.user;
+      // Obtener organizationId del usuario logueado
+      const { organizationId } = req.user;
 
-  //     // Validar y formatear los productos
-  //     const { validProducts, errors } = await validateAndFormatProducts(
-  //       organizationId,
-  //       excel[0]
-  //     ); // Agregar await aquí
+      // Validar y formatear los productos
+      const { validProducts, errors } = await validateAndFormatProducts(
+        organizationId,
+        excel[0]
+      ); // Agregar await aquí
 
-  //     if (errors.length > 0) {
-  //       res.status(400).json({
-  //         message: "Errores en los datos del archivo",
-  //         errors,
-  //       });
-  //       return; // Ensure no further execution
-  //     }
+      if (errors.length > 0) {
+        res.status(400).json({
+          message: "Errores en los datos del archivo",
+          errors,
+        });
+        return; // Ensure no further execution
+      }
 
-  //     // Insertar los productos validados
-  //     await ProductModel.insertMany(validProducts);
+      // Insertar los productos validados
+      await ProductModel.insertMany(validProducts);
 
-  //     res.status(200).json({
-  //       msg: "Procesamiento completado",
-  //       newProducts: validProducts,
-  //     });
-  //   } catch (error) {
-  //     res
-  //       .status(500)
-  //       .json({ message: "Error al procesar el archivo: " + error.message });
-  //   }
-  // };
+      res.status(200).json({
+        msg: "Procesamiento completado",
+        newProducts: validProducts,
+      });
+    } catch (error) {
+      res
+        .status(500)
+        .json({ message: "Error al procesar el archivo: " + error.message });
+    }
+  };
 
   lowStockProducts = async (req: Request, res: Response) => {
     try {
