@@ -1,4 +1,4 @@
-//TO DO REFACTORIZAR CLIENT INVOICE
+//TO DO REFACTORIZAR SUpplier INVOICE
 
 // import mongoose, { Schema } from "mongoose";
 // import { supplierCurrentAccountModel } from "./supplierCurrentAccount.model"; // Importar el modelo de cuenta corriente de proveedores
