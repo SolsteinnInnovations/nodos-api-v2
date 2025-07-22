@@ -13,6 +13,7 @@ const routes_6 = require("./sucursales/routes");
 const routes_7 = require("./clientInvoice/routes");
 const routes_8 = require("./clients/routes");
 const routes_9 = require("./person/routes");
+const routes_10 = require("./permission/routes");
 class AppRoutes {
     static get routes() {
         const router = (0, express_1.Router)();
@@ -28,6 +29,8 @@ class AppRoutes {
         router.use("/api/v1/dailycash", routes_1.DailyCashRoutes.routes);
         // Rutas de productos por sucursal
         router.use("/api/v1/productsucursal", routes_2.ProducSucursaltroutes.routes);
+        // Rutas de permisos
+        router.use("/api/v1/permission", routes_10.PermissionRoutes.routes);
         return router;
     }
 }
