@@ -11,8 +11,8 @@ import { SucursalRoutes } from "./sucursales/routes";
 import { ClienteInvoiceRoutes } from "./clientInvoice/routes";
 import { ClientRoutes } from "./clients/routes";
 import { PersonRoutes } from "./person/routes";
-
-
+import { PermissionRoutes } from "./permission/routes";
+import { SupplierRoutes } from "./suppliers/routes";
 
 export class AppRoutes {
   static get routes(): Router {
@@ -41,6 +41,12 @@ export class AppRoutes {
       "/api/v1/productsucursal",
       ProducSucursaltroutes.routes
     );
+    // Rutas de permisos
+    router.use("/api/v1/permission", PermissionRoutes.routes);
+    // Rutas de proveedores
+    router.use("/api/v1/supplier", SupplierRoutes.routes);
+
+
   
     return router;
   }
