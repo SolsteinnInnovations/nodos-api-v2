@@ -14,6 +14,7 @@ const routes_7 = require("./clientInvoice/routes");
 const routes_8 = require("./clients/routes");
 const routes_9 = require("./person/routes");
 const routes_10 = require("./permission/routes");
+const routes_11 = require("./suppliers/routes");
 class AppRoutes {
     static get routes() {
         const router = (0, express_1.Router)();
@@ -31,6 +32,8 @@ class AppRoutes {
         router.use("/api/v1/productsucursal", routes_2.ProducSucursaltroutes.routes);
         // Rutas de permisos
         router.use("/api/v1/permission", routes_10.PermissionRoutes.routes);
+        // Rutas de proveedores
+        router.use("/api/v1/supplier", routes_11.SupplierRoutes.routes);
         return router;
     }
 }
