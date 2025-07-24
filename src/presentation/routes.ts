@@ -14,6 +14,7 @@ import { PersonRoutes } from "./person/routes";
 import { PermissionRoutes } from "./permission/routes";
 import { SupplierRoutes } from "./suppliers/routes";
 
+
 export class AppRoutes {
   static get routes(): Router {
     const router = Router();
@@ -45,6 +46,9 @@ export class AppRoutes {
     router.use("/api/v1/permission", PermissionRoutes.routes);
     // Rutas de proveedores
     router.use("/api/v1/supplier", SupplierRoutes.routes);
+    // Rutas de facturas de proveedores
+    router.use("/api/v1/supplierinvoice", require("./supplierInvoice/routes").SupplierInvoiceRoutes.routes);
+
 
 
   
