@@ -1,70 +1,70 @@
-//TO DO REFACTORIZAR SUpplier INVOICE
+// TO DO REFACTORIZAR SUpplier INVOICE
 
-// import mongoose, { Schema } from "mongoose";
+import mongoose, { Schema } from "mongoose";
 // import { supplierCurrentAccountModel } from "./supplierCurrentAccount.model"; // Importar el modelo de cuenta corriente de proveedores
 
-// const supplierInvoiceSchema = new mongoose.Schema(
-//   {
-//     idProveedor: {
-//       type: Schema.Types.ObjectId,
-//       ref: "Supplier",
-//       required: [true, "El ID del proveedor es requerido"],
-//     },
-//     estado: {
-//       type: Boolean,
-//       default: true,
-//     },
-//     fechaPago: {
-//       type: Date,
-//     },
-//     numeroFactura: {
-//       type: String,
-//       required: [true, "El número de factura es requerido"],
-//     },
-//     cantidadTotal: {
-//       type: Number,
-//       required: [true, "La cantidad total es requerida"],
-//     },
-//     importe: {
-//       type: Number,
-//       required: [true, "El importe es requerido"],
-//     },
-//     fechaFactura: {
-//       type: Date,
-//       required: [true, "La fecha de la factura es requerida"],
-//     },
-//     items: {
-//       type: Array,
-//       required: [true, "Los items son requeridos"],
-//     },
-//     metodosDePago: {
-//       type: Array,
-//       default: null,
-//     },
-//     idSucursal: {
-//       type: Schema.Types.ObjectId,
-//       ref: "Sucursal",
-//       required: [true, "El ID de la sucursal es requerido"],
-//     },
-//     organizacion: {
-//       type: String,
-//       required: [true, "La organizacion es requerida"],
-//     }
-//   },
-//   {
-//     timestamps: true, // Agrega automáticamente createdAt y updatedAt
-//   }
-// );
+const supplierInvoiceSchema = new mongoose.Schema(
+  {
+    idProveedor: {
+      type: Schema.Types.ObjectId,
+      ref: "Supplier",
+      required: [true, "El ID del proveedor es requerido"],
+    },
+    estado: {
+      type: Boolean,
+      default: true,
+    },
+    fechaPago: {
+      type: Date,
+    },
+    numeroFactura: {
+      type: String,
+      required: [true, "El número de factura es requerido"],
+    },
+    cantidadTotal: {
+      type: Number,
+      required: [true, "La cantidad total es requerida"],
+    },
+    importe: {
+      type: Number,
+      required: [true, "El importe es requerido"],
+    },
+    fechaFactura: {
+      type: Date,
+      required: [true, "La fecha de la factura es requerida"],
+    },
+    items: {
+      type: Array,
+      required: [true, "Los items son requeridos"],
+    },
+    metodosDePago: {
+      type: Array,
+      default: null,
+    },
+    idSucursal: {
+      type: Schema.Types.ObjectId,
+      ref: "Sucursal",
+      required: [true, "El ID de la sucursal es requerido"],
+    },
+    organizacion: {
+      type: String,
+      required: [true, "La organizacion es requerida"],
+    }
+  },
+  {
+    timestamps: true, // Agrega automáticamente createdAt y updatedAt
+  }
+);
 
-// supplierInvoiceSchema.set("toJSON", {
-//   virtuals: true,
-//   versionKey: false,
-//   transform: function (doc, ret, options) {
-//     delete ret._v;
-//     delete ret.uid;
+supplierInvoiceSchema.set("toJSON", {
+  virtuals: true,
+  versionKey: false,
+  transform: function (doc, ret, options) {
+    delete ret._v;
+    delete ret.uid;
     
-//   },
-// });
+  },
+});
 
 // // Middleware post-save para crear una cuenta corriente si esCuentaCorriente es true
 // supplierInvoiceSchema.post("save", async function (doc, next) {
@@ -143,7 +143,7 @@
 //   }
 // });
 
-// export const SupplierInvoiceModel = mongoose.model(
-//   "SupplierInvoice",
-//   supplierInvoiceSchema
-// );
+export const SupplierInvoiceModel = mongoose.model(
+  "SupplierInvoice",
+  supplierInvoiceSchema
+);
